@@ -1,6 +1,7 @@
 #pragma once
 #include "Scene.h"
 
+class Player;
 class UiHud;
 class SpriteGo;
 class Gun;
@@ -12,7 +13,8 @@ protected:
 	UiHud* hud;
 	SpriteGo* crosshair;
 	Gun* gun;
-	SpriteGo* Magazine;
+	SpriteGo* magazine;
+	Player* player;
 
 	float speed = 100.f;
 	sf::Vector2f firedirection = { 0.f,0.f };

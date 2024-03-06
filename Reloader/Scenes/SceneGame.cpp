@@ -2,6 +2,7 @@
 #include "SceneGame.h"
 #include "UiHud.h"
 #include "Gun.h"
+#include "Player.h"
 
 SceneGame::SceneGame(SceneIds id)
 	: Scene(id)
@@ -11,16 +12,14 @@ SceneGame::SceneGame(SceneIds id)
 
 void SceneGame::Init()
 {
-	gun = new Gun("gun");
-	gun->SetPosition({ 0.f,0.f });
-	gun->SetOrigin(Origins::TC);
-	gun->sortLayer = 1;
-	AddGo(gun);
-
-	Scene::Init();
-
 	sf::Vector2f windowSize = (sf::Vector2f)FRAMEWORK.GetWindowSize();
 	sf::Vector2f centerPos = windowSize * 0.5f;
+
+	gun = new Gun("gun");
+	gun->SetPosition({ 1920.f - 300,1080.f - 200 });
+	gun->SetOrigin(Origins::TL);
+	gun->sortLayer = 1;
+	AddGo(gun, Scene::Ui);
 
 	crosshair = new SpriteGo("cross");
 	crosshair->SetTexture("graphics/aimTarget.png");
@@ -30,17 +29,23 @@ void SceneGame::Init()
 	AddGo(crosshair);
 
 	testBg = new SpriteGo("testBg");
-	testBg->SetTexture("graphics/testBG.png");
+	testBg->SetTexture("graphics/stage3_bg_render_slow.png");
 	testBg->SetPosition({0.f,0.f});
 	testBg->sortLayer = -1;
 	testBg->SetOrigin(Origins::MC);
 	AddGo(testBg);
 
-	Magazine = new SpriteGo("magazine");
-	Magazine->SetTexture("graphics/magazine.png");
-	Magazine->SetOrigin(Origins::TL);
-	Magazine->SetPosition({ 1920.f/2 - 500, 1080.f/3 });
-	AddGo(Magazine, Scene::Ui);
+	magazine = new SpriteGo("magazine");
+	magazine->SetTexture("graphics/magazine.png");
+	magazine->SetOrigin(Origins::TC);
+	magazine->SetPosition({ 1920.f / 2 - 500, 1080.f / 3 });
+	magazine->sortLayer = 0;
+	AddGo(magazine, Scene::Ui);
+
+	player = new Player("Player");
+	AddGo(player);
+
+	Scene::Init();
 }
 
 void SceneGame::Release()
@@ -68,11 +73,16 @@ void SceneGame::Reset()
 void SceneGame::Update(float dt)
 {
 	Scene::Update(dt);
-	//sf::Vector2f worldViewCenter = worldView.getCenter();
-	//worldViewCenter = Utils::Lerp(worldViewCenter,gunBody->GetPosition(), dt * 2.f);
-	//worldView.setCenter(worldViewCenter);
-
 	crosshair->SetPosition(ScreenToWorld((sf::Vector2i)InputMgr::GetMousePos()));
+
+	sf::Vector2f worldViewCenter = worldView.getCenter();
+	worldViewCenter = Utils::Lerp(worldViewCenter, player->GetPosition(), dt * 3.f);
+	worldView.setCenter(worldViewCenter);
+
+	sf::Vector2f gunPos = gun->GetPosition();
+	gunPos.x += 95.f;
+	gunPos.y += 10.f;
+	magazine->SetPosition(gunPos);
 
 	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
 	{
@@ -81,11 +91,11 @@ void SceneGame::Update(float dt)
 	bulletMagazine = gun->GetBulletCount();
 	if (bulletMagazine <= 0)
 	{
-		Magazine->SetTexture("graphics/emptymagazine.png");
+		magazine->SetTexture("graphics/emptymagazine.png");
 	}
 	else
 	{
-		Magazine->SetTexture("graphics/magazine.png");
+		magazine->SetTexture("graphics/magazine.png");
 	}
 
 }
