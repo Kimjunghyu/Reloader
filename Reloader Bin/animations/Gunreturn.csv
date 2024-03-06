@@ -1,5 +1,5 @@
 ID,FPS,"LOOPTYPE(0:SINGLE, 1:LOOP, 2:PING PONG)",,
-gunreturn,25,0,,
+gunreturn,100,0,,
 ,,,,
 TEXTURE ID,LEFT,Top,WIDTH,HEIGHT
 graphics/gunanimation_return.png,0,0,234,124

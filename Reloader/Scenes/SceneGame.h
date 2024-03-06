@@ -12,7 +12,7 @@ protected:
 	UiHud* hud;
 	SpriteGo* crosshair;
 	Gun* gun;
-	SpriteGo* gunBody;
+	SpriteGo* Magazine;
 
 	float speed = 100.f;
 	sf::Vector2f firedirection = { 0.f,0.f };
@@ -20,6 +20,7 @@ protected:
 	float timer = 0.f;
 	float delay = 1.0;
 
+	int bulletMagazine;
 	bool isFiring = false;
 public:
 	SceneGame(SceneIds id);
@@ -28,10 +29,6 @@ public:
 	UiHud* GetHud() const
 	{
 		return hud;
-	}
-	SpriteGo* GetGunBody() const
-	{
-		return gunBody;
 	}
 	void Init() override;
 	void Release() override;

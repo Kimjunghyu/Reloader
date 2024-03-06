@@ -36,14 +36,11 @@ void SceneGame::Init()
 	testBg->SetOrigin(Origins::MC);
 	AddGo(testBg);
 
-	gunBody = new SpriteGo("gunBody");
-	gunBody->SetTexture("graphics/gun.png");
-	gunBody->SetPosition({ 1920.f/2,1080.f/2 });
-	gunBody->SetOrigin(Origins::TC);
-	gunBody->sortLayer = 0;
-	AddGo(gunBody, Scene::Ui);
-
-
+	Magazine = new SpriteGo("magazine");
+	Magazine->SetTexture("graphics/magazine.png");
+	Magazine->SetOrigin(Origins::TL);
+	Magazine->SetPosition({ 1920.f/2 - 500, 1080.f/3 });
+	AddGo(Magazine, Scene::Ui);
 }
 
 void SceneGame::Release()
@@ -80,6 +77,15 @@ void SceneGame::Update(float dt)
 	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
 	{
 		gun->GetisFiring(true);
+	}
+	bulletMagazine = gun->GetBulletCount();
+	if (bulletMagazine <= 0)
+	{
+		Magazine->SetTexture("graphics/emptymagazine.png");
+	}
+	else
+	{
+		Magazine->SetTexture("graphics/magazine.png");
 	}
 
 }

@@ -85,6 +85,7 @@ public:
 	void Play(const std::string& clipId, bool clearQueue = true);
 	void PlayQueue(const std::string& clipid);
 	void Stop();
+	void Resume();
 	void SetFrame(const AnimationFrame& frame);
 };
 

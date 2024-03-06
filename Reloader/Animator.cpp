@@ -111,6 +111,11 @@ void Animator::Stop()
 	isPlaying = false;
 }
 
+void Animator::Resume()
+{
+	isPlaying = true;
+}
+
 void Animator::SetFrame(const AnimationFrame& frame)
 {
 	target->setTexture(frame.GetTexture());

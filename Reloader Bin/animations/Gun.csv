@@ -1,5 +1,5 @@
 ID,FPS,"LOOPTYPE(0:SINGLE, 1:LOOP, 2:PING PONG)",,
-gun,100,0,,
+gun,200,0,,
 ,,,,
 TEXTURE ID,LEFT,Top,WIDTH,HEIGHT
 graphics/gunanimation.png,0,0,234,124
