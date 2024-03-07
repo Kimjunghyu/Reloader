@@ -10,8 +10,13 @@ Player::Player(const std::string& name)
 void Player::Init()
 {
 	SpriteGo::Init();
-	SetTexture("graphics/gang model.png");
 	SetOrigin(Origins::BC);
+	animator.SetTarget(&sprite);
+
+	playerArm = new SpriteGo("arm");
+	playerArm->SetTexture("graphics/playerarm.png");
+	playerArm->SetOrigin(Origins::ML);
+	playerArm->SetPosition({ 0.f,0.f });
 }
 
 void Player::Release()
@@ -22,17 +27,54 @@ void Player::Release()
 void Player::Reset()
 {
 	sceneGame = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+
+	animator.Play("animations/playeridle.csv");
+	SetOrigin(Origins::BC);
+	SetPosition({ 0.f,335.f });
 }
 
 void Player::Update(float dt)
 {
 	SpriteGo::Update(dt);
 
+	animator.Update(dt);
+
 	sf::Vector2i mousePos = (sf::Vector2i)InputMgr::GetMousePos();
 	sf::Vector2f mouseWorldPos = SCENE_MGR.GetCurrentScene()->ScreenToWorld(mousePos);
 
-	look = mouseWorldPos - position;
+
+	direction.x = InputMgr::GetAxis(Axis::Horizontal);
+	if (animator.GetCurrentClipId() == "animations/playeridle.csv")
+	{
+		if (direction.x != 0.f)
+		{
+			animator.PlayQueue("animations/playerrun.csv");
+		}
+
+	}
+	else if (animator.GetCurrentClipId() == "animations/playerrun.csv")
+	{
+		if (direction.x == 0.f)
+		{
+			animator.Play("animations/playeridle.csv");
+		}
+
+	}
+	if (Utils::Magnitude(direction) > 1.f)
+	{
+		Utils::Normalize(direction);
+	}
+
+	sf::Vector2f pos = position + direction * speed * dt;
+	SetPosition(pos);
+
+	armPos.x = (sprite.getPosition().x - 10.f);
+	armPos.y = (sprite.getGlobalBounds().top + 30.f);
+
+	look = mouseWorldPos - armPos;
 	Utils::Normalize(look);
+	playerArm->SetRotation(Utils::Angle(look));
+	playerArm->SetPosition(armPos);
 
 	if (look.x < 0)
 	{
@@ -43,18 +85,10 @@ void Player::Update(float dt)
 		SetFlipX(false);
 	}
 
-	direction.x = InputMgr::GetAxis(Axis::Horizontal);
-	direction.y = InputMgr::GetAxis(Axis::Vertical);
-	if (Utils::Magnitude(direction) > 1.f)
-	{
-		Utils::Normalize(direction);
-	}
-
-	sf::Vector2f pos = position + direction * speed * dt;
-	SetPosition(pos);
 }
 
 void Player::Draw(sf::RenderWindow& window)
 {
 	SpriteGo::Draw(window);
+	playerArm->Draw(window);
 }
