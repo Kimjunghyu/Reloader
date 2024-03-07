@@ -6,7 +6,10 @@
 class UiHud : public GameObject
 {
 protected:
-	SpriteGo gunBody;
+	SpriteGo fame1;
+	SpriteGo fame2;
+	SpriteGo fame3;
+	SpriteGo fame4;
 
 	TextGo uiFps;
 

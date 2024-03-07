@@ -21,11 +21,14 @@ protected:
 	sf::Vector2f bulletFiring = { 1.f,-1.f };
 	sf::Vector2f Direction = { 1.f, 1.f };
 	sf::Vector2f bulletPos;
+
+	bool anistop = false;
 public:
 	Gun(const std::string& name = "");
 	~Gun()override;
 	void TestInstance();
 	void EmptyMagazine();
+	void checkMagazie();
 
 	void Init() override;
 	void Reset() override;

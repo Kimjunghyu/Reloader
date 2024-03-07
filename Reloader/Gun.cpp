@@ -28,6 +28,20 @@ void Gun::EmptyMagazine()
 	if (bulletCount != 0)
 	{
 		animator.Resume();
+		animator.Play("animations/Gunreturn.csv");
+	}
+}
+
+void Gun::checkMagazie()
+{
+	if (InputMgr::GetKey(sf::Keyboard::E))
+	{
+		anistop = true;
+		isFiring = false;
+	}
+	if (anistop)
+	{
+		animator.Stop();
 	}
 }
 
@@ -74,7 +88,19 @@ void Gun::Update(float dt)
 		isFiring = true;
 		animator.Resume();
 	}
-
+	if (InputMgr::GetKeyDown(sf::Keyboard::E))
+	{
+		animator.PlayQueue("animations/Gun.csv");
+		std::function<void()> checkmagazine = std::bind(&Gun::checkMagazie, this);
+		animator.AddEvent("animations/Gunreturn.csv", 1, checkmagazine);
+	}
+	else if (InputMgr::GetKeyUp(sf::Keyboard::E))
+	{
+		animator.Play("animations/Gunreturn.csv");
+		animator.Resume();
+		anistop = false;
+		isFiring = true;
+	}
 	SpriteGo::Update(dt);
 	
 }
