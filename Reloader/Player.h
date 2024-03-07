@@ -20,6 +20,11 @@ public:
 	Player(const std::string& name = "");
 	~Player() override = default;
 
+	SpriteGo* GetPlayerArm()
+	{
+		return playerArm;
+	}
+
 	void Init() override;
 	void Release() override;
 	void Reset() override;

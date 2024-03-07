@@ -2,8 +2,8 @@ ID,FPS,"LOOPTYPE(0:SINGLE, 1:LOOP, 2:PING PONG)",,
 gunrerr,100,0,,
 ,,,,
 TEXTURE ID,LEFT,Top,WIDTH,HEIGHT
-graphics/gunanimation-0.png,0,0,234,124
-graphics/gunanimation-1.png,234,0,234,124
-graphics/gunanimation-2.png,468,0,234,124
-graphics/gunanimation-3.png,702,0,234,124
-graphics/gunanimation-4.png,936,0,234,124
+graphics/gunanimationerr.png,0,0,234,124
+graphics/gunanimationerr.png,234,0,234,124
+graphics/gunanimationerr.png,468,0,234,124
+graphics/gunanimationerr.png,702,0,234,124
+graphics/gunanimationerr.png,936,0,234,124
