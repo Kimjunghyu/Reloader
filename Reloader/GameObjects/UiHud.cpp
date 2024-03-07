@@ -17,24 +17,43 @@ void UiHud::Update(float dt)
 
 void UiHud::Init()
 {
-	GameObject::Init();
-	gunBody.Init();
+	frame1.Init();
+	frame2.Init();
+	frame3.Init();
+	frame4.Init();
 
+	frame1.SetTexture("graphics/inventoryFrame1.png");
+	frame2.SetTexture("graphics/inventoryFrame2.png");
+	frame3.SetTexture("graphics/inventoryFrame3.png");
+	frame4.SetTexture("graphics/inventoryFrame4.png");
 
-	gunBody.SetTexture("graphics/gunBody.png");
-	gunBody.SetOrigin(Origins::BL);
-	gunBody.SetPosition({ 0.f,0.f });
+	frame1.SetOrigin(Origins::TC);
+	frame2.SetOrigin(Origins::TC);
+	frame3.SetOrigin(Origins::TC);
+	frame4.SetOrigin(Origins::TC);
 
+	referenceResolution = (sf::Vector2f)FRAMEWORK.GetWindowSize();
+	frame1.SetPosition({ 25.f,referenceResolution.y - 25 });
+	frame2.SetPosition({ 125.f,referenceResolution.y - 25 });
+	frame3.SetPosition({ 225.f,referenceResolution.y - 25 });
+	frame4.SetPosition({ 325.f,referenceResolution.y - 25 });
 }
 
 void UiHud::Reset()
 {
 	GameObject::Reset();
-	gunBody.Reset();
+	frame1.Reset();
+	frame2.Reset();
+	frame3.Reset();
+	frame4.Reset();
 }
 
 void UiHud::Draw(sf::RenderWindow& window)
 {
 	GameObject::Draw(window);
-	gunBody.Draw(window);
+
+	frame1.Draw(window);
+	frame2.Draw(window);
+	frame3.Draw(window);
+	frame4.Draw(window);
 }

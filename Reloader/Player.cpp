@@ -14,7 +14,7 @@ void Player::Init()
 	animator.SetTarget(&sprite);
 
 	playerArm = new SpriteGo("arm");
-	playerArm->SetTexture("graphics/playerarm.png");
+	playerArm->SetTexture("graphics/playerarm1.png");
 	playerArm->SetOrigin(Origins::ML);
 	playerArm->SetPosition({ 0.f,0.f });
 }
@@ -58,7 +58,6 @@ void Player::Update(float dt)
 		{
 			animator.Play("animations/playeridle.csv");
 		}
-
 	}
 	if (Utils::Magnitude(direction) > 1.f)
 	{
@@ -68,10 +67,10 @@ void Player::Update(float dt)
 	sf::Vector2f pos = position + direction * speed * dt;
 	SetPosition(pos);
 
-	armPos.x = (sprite.getPosition().x - 10.f);
-	armPos.y = (sprite.getGlobalBounds().top + 30.f);
+	armPos.x = (sprite.getPosition().x);
+	armPos.y = (sprite.getGlobalBounds().top + 20.f);
 
-	look = mouseWorldPos - armPos;
+	look = mouseWorldPos - position;
 	Utils::Normalize(look);
 	playerArm->SetRotation(Utils::Angle(look));
 	playerArm->SetPosition(armPos);
@@ -84,7 +83,14 @@ void Player::Update(float dt)
 	{
 		SetFlipX(false);
 	}
-
+	if (mouseWorldPos.x < GetPosition().x)
+	{
+		playerArm->SetFlipY(true);
+	}
+	else
+	{
+		playerArm->SetFlipY(false);
+	}
 }
 
 void Player::Draw(sf::RenderWindow& window)

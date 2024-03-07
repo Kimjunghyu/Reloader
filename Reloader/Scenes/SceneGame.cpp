@@ -16,8 +16,8 @@ void SceneGame::Init()
 	sf::Vector2f centerPos = windowSize * 0.5f;
 
 	gun = new Gun("gun");
-	gun->SetPosition({ 1920.f - 300,1080.f - 200 });
-	gun->SetOrigin(Origins::TL);
+	gun->SetPosition({ centerPos.x + 200.f, centerPos.y + 100.f });
+	gun->SetOrigin(Origins::BL);
 	gun->sortLayer = 1;
 	AddGo(gun, Scene::Ui);
 
@@ -38,9 +38,14 @@ void SceneGame::Init()
 	magazine = new SpriteGo("magazine");
 	magazine->SetTexture("graphics/magazine.png");
 	magazine->SetOrigin(Origins::TC);
-	magazine->SetPosition({ 1920.f / 2 - 500, 1080.f / 3 });
+	magazine->SetPosition(centerPos);
 	magazine->sortLayer = 0;
 	AddGo(magazine, Scene::Ui);
+
+	hud = new UiHud("Hud");
+	hud->SetOrigin(Origins::BL);
+	hud->SetPosition(centerPos);
+	AddGo(hud, Scene::Ui);
 
 	player = new Player("Player");
 	AddGo(player);
@@ -108,6 +113,7 @@ void SceneGame::FixedUpdate(float dt)
 void SceneGame::Draw(sf::RenderWindow& window)
 {
 	Scene::Draw(window);
+	hud->Draw(window);
 }
 
 void SceneGame::Fire()
