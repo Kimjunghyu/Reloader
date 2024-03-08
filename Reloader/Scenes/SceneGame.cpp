@@ -3,6 +3,8 @@
 #include "UiHud.h"
 #include "Gun.h"
 #include "Player.h"
+#include "Enemy.h"
+#include "Effect.h"
 
 SceneGame::SceneGame(SceneIds id)
 	: Scene(id)
@@ -24,7 +26,6 @@ void SceneGame::Init()
 
 	crosshair = new SpriteGo("cross");
 	crosshair->SetTexture("graphics/MouseTarget.png");
-
 	crosshair->SetPosition({ 0.f,0.f });
 	crosshair->SetOrigin(Origins::MC);
 	crosshair->sortLayer = 1;
@@ -49,13 +50,12 @@ void SceneGame::Init()
 	hud->SetOrigin(Origins::BL);
 	hud->SetPosition(centerPos);
 	AddGo(hud, Scene::Ui);
-	
-	test = new SpriteGo("test");
-	test->SetTexture("graphics/test.png");
-	test->SetPosition({ 0.f,0.f });
-	test->SetOrigin(Origins::BC);
-	test->SetFlipX(true);
-	AddGo(test);
+
+	enemy = new Enemy("enemy");
+	AddGo(enemy);
+
+	effect = new Effect("effect");
+	AddGo(effect);
 
 	player = new Player("Player");
 	AddGo(player);
@@ -98,10 +98,6 @@ void SceneGame::Update(float dt)
 	gunPos.y += 10.f;
 	magazine->SetPosition(gunPos);
 
-	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
-	{
-		gun->GetisFiring(true);
-	}
 	bulletMagazine = gun->GetBulletCount();
 	if (bulletMagazine <= 0)
 	{
@@ -112,11 +108,41 @@ void SceneGame::Update(float dt)
 		magazine->SetTexture("graphics/fullmagazine.png");
 	}
 
-	test->SetPosition({ 300.f,player->GetPosition().y});
-
-	if (Utils::Distance(test->GetPosition(), crosshair->GetPosition()) <= abs(80.f))
+	if (Utils::Distance(enemy->GetPosition(), crosshair->GetPosition()) <= abs(80.f))
 	{
-		crosshair->SetPosition({ test->GetPosition().x,test->GetPosition().y - (test->GetGlobalBounds().height*0.7f)});
+		crosshair->SetPosition({ enemy->GetPosition().x,enemy->GetPosition().y - (enemy->GetGlobalBounds().height*0.7f)});
+		crosshair->SetTexture("graphics/aimTarget1.png");
+		player->SetMoveArm(true);
+		player->SetPlayerArmAngle(crosshair->GetPosition());
+
+		if (InputMgr::GetMouseButton(sf::Mouse::Right))
+		{
+			crosshair->SetScale({ 1.5,1.5 });
+			crosshair->SetPosition({ enemy->GetPosition().x,enemy->GetPosition().y - (enemy->GetGlobalBounds().height - 5.f) });
+			player->SetPlayerArmAngle(crosshair->GetPosition());
+			EnemyHit(100);
+		}
+		else if (InputMgr::GetKey(sf::Keyboard::S))
+		{
+			crosshair->SetPosition({ enemy->GetPosition().x,enemy->GetPosition().y - 5.f });
+			player->SetPlayerArmAngle(crosshair->GetPosition());
+			EnemyHit(40);
+		}
+		else
+		{
+			EnemyHit(50);
+		}
+	}
+	else
+	{
+		player->SetMoveArm(false);
+		crosshair->SetTexture("graphics/MouseTarget.png");
+	}
+
+	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
+	{
+		enemy->EnemyHpSet(100);
+		enemy->SetActive(true);
 	}
 }
 
@@ -131,6 +157,11 @@ void SceneGame::Draw(sf::RenderWindow& window)
 	hud->Draw(window);
 }
 
-void SceneGame::Fire()
+void SceneGame::EnemyHit(int d)
 {
+	if (gun->GetOnTarget() != false && InputMgr::GetMouseButtonDown(sf::Mouse::Left) && bulletMagazine > 0)
+	{
+		enemy->Onhit(d);
+	}
 }
+

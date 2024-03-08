@@ -50,7 +50,6 @@ void Player::Update(float dt)
 		{
 			animator.PlayQueue("animations/playerrun.csv");
 		}
-
 	}
 	else if (animator.GetCurrentClipId() == "animations/playerrun.csv")
 	{
@@ -72,7 +71,11 @@ void Player::Update(float dt)
 
 	look = mouseWorldPos - position;
 	Utils::Normalize(look);
-	playerArm->SetRotation(Utils::Angle(look));
+	if (!moveArm)
+	{
+		playerArm->SetRotation(Utils::Angle(look));
+	}
+
 	playerArm->SetPosition(armPos);
 
 	if (look.x < 0)
@@ -97,4 +100,10 @@ void Player::Draw(sf::RenderWindow& window)
 {
 	SpriteGo::Draw(window);
 	playerArm->Draw(window);
+}
+
+void Player::SetPlayerArmAngle(sf::Vector2f v)
+{
+	v -= playerArm->GetPosition();
+	playerArm->SetRotation(Utils::Angle(v));
 }

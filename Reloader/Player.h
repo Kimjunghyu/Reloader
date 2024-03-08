@@ -16,6 +16,7 @@ protected:
 	SpriteGo* playerArm;
 
 	SceneGame* sceneGame = nullptr;
+	bool moveArm = false;
 public:
 	Player(const std::string& name = "");
 	~Player() override = default;
@@ -30,5 +31,7 @@ public:
 	void Reset() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+	bool SetMoveArm(bool c) { return moveArm = c; }
+	void SetPlayerArmAngle(sf::Vector2f v);
 };
 

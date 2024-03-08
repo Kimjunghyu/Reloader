@@ -1,0 +1,7 @@
+ID,FPS,"LOOPTYPE(0:SINGLE, 1:LOOP, 2:PING PONG)",,
+fireEffect,100,0,,
+,,,,
+TEXTURE ID,LEFT,Top,WIDTH,HEIGHT
+graphics/effect.png,0,0,33,17
+graphics/effect.png,33,0,33,17
+graphics/effect.png,66,0,33,17

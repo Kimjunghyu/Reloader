@@ -5,6 +5,8 @@ class Player;
 class UiHud;
 class SpriteGo;
 class Gun;
+class Enemy;
+class Effect;
 
 class SceneGame : public Scene
 {
@@ -15,8 +17,8 @@ protected:
 	Gun* gun;
 	SpriteGo* magazine;
 	Player* player;
-	SpriteGo* test;
-
+	Enemy* enemy = nullptr;
+	Effect* effect;
 
 	float speed = 100.f;
 	sf::Vector2f firedirection = { 0.f,0.f };
@@ -34,6 +36,7 @@ public:
 	{
 		return hud;
 	}
+
 	void Init() override;
 	void Release() override;
 
@@ -45,6 +48,6 @@ public:
 	void FixedUpdate(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 
-	void Fire();
+	void EnemyHit(int d);
 };
 

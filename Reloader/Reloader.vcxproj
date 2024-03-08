@@ -141,6 +141,8 @@
     <ClCompile Include="Cartridge.cpp" />
     <ClCompile Include="DataTable\DataTableMgr.cpp" />
     <ClCompile Include="DataTable\DataTable.cpp" />
+    <ClCompile Include="Effect.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Framework\Framework.cpp" />
     <ClCompile Include="Framework\InputMgr.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
@@ -177,6 +179,8 @@
     <ClInclude Include="Cartridge.h" />
     <ClInclude Include="DataTable\DataTableMgr.h" />
     <ClInclude Include="DataTable\DataTable.h" />
+    <ClInclude Include="Effect.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="Framework\rapidcsv.h" />
     <ClInclude Include="Framework\Framework.h" />
     <ClInclude Include="Framework\Defines.h" />

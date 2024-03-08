@@ -4,6 +4,7 @@
 #include "Player.h"
 
 class SceneGame;
+class Effect;
 
 class Gun : public SpriteGo
 {
@@ -11,8 +12,8 @@ protected:
 	Animator animator;
 	SceneGame* sceneGame;
 	SpriteGo* bullet;
-	SpriteGo* effect;
 	Player* player;
+	Effect* effect = nullptr;
 
 	float gravity = 500.f;
 	float speed = 400.f;
@@ -29,6 +30,7 @@ protected:
 	bool isFiring = false;
 	bool anistop = false;
 	bool missFire = false;
+	bool onTarget = false;
 public:
 	Gun(const std::string& name = "");
 	~Gun()override;
@@ -44,6 +46,6 @@ public:
 	bool GetisFiring(bool isFiring) { return isFiring; }
 	int GetBulletCount() { return bulletCount; }
 
-
+	bool GetOnTarget() { return onTarget; }
 };
 

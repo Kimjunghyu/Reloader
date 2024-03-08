@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "Gun.h"
+#include "Effect.h"
+#include "SceneGame.h"
 
 Gun::Gun(const std::string& name)
 	:SpriteGo(name)
@@ -34,6 +36,12 @@ void Gun::Init()
 {
 	SpriteGo::Init();
 	animator.SetTarget(&sprite);
+
+	effect = new Effect("effect");
+	SCENE_MGR.GetCurrentScene()->AddGo(effect);
+
+	//effect = new SpriteGo("effect");
+	//effect->SetTexture("graphics/")
 }
 
 void Gun::Reset()
@@ -41,6 +49,8 @@ void Gun::Reset()
 	animator.ClearEvent();
 
 	player = dynamic_cast<Player*>(SCENE_MGR.GetCurrentScene()->FindGo("Player"));
+	effect = dynamic_cast<Effect*>(SCENE_MGR.GetCurrentScene()->FindGo("effect"));
+	sceneGame = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
 
 	std::function<void()> funcInstance = std::bind(&Gun::TestInstance, this);
 	animator.AddEvent("animations/Gun.csv", 5, funcInstance);
@@ -73,10 +83,15 @@ void Gun::Update(float dt)
 			animator.AddEvent("animations/Gunrerr.csv", 5, errgun);
 			missFire = true;
 		}
-
+		effect->Fire();
 		bulletCount -= 1;
 		std::cout << bulletCount << std::endl;
 		isFiring = false;
+		onTarget = true;
+	}
+	if (timer == 0)
+	{
+		onTarget = false;
 	}
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::R))
@@ -97,7 +112,7 @@ void Gun::Update(float dt)
 	{
 		anistop = true;
 		isFiring = false;
-		if (InputMgr::GetKeyDown(sf::Keyboard::T))
+		if (bulletCount > 0&&InputMgr::GetKeyDown(sf::Keyboard::T))
 		{
 			bulletCount -= 1;
 			std::cout << bulletCount << std::endl;
