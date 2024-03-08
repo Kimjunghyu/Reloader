@@ -23,10 +23,11 @@ void SceneGame::Init()
 	AddGo(gun, Scene::Ui);
 
 	crosshair = new SpriteGo("cross");
-	crosshair->SetTexture("graphics/aimTarget.png");
-	crosshair->SetScale({ 0.5f,0.5f });
+	crosshair->SetTexture("graphics/MouseTarget.png");
+
 	crosshair->SetPosition({ 0.f,0.f });
 	crosshair->SetOrigin(Origins::MC);
+	crosshair->sortLayer = 1;
 	AddGo(crosshair);
 
 	testBg = new SpriteGo("testBg");
@@ -48,6 +49,13 @@ void SceneGame::Init()
 	hud->SetOrigin(Origins::BL);
 	hud->SetPosition(centerPos);
 	AddGo(hud, Scene::Ui);
+	
+	test = new SpriteGo("test");
+	test->SetTexture("graphics/test.png");
+	test->SetPosition({ 0.f,0.f });
+	test->SetOrigin(Origins::BC);
+	test->SetFlipX(true);
+	AddGo(test);
 
 	player = new Player("Player");
 	AddGo(player);
@@ -64,7 +72,6 @@ void SceneGame::Enter()
 {
 	Scene::Enter();
 	FRAMEWORK.GetWindow().setMouseCursorVisible(false);
-
 }
 
 void SceneGame::Exit()
@@ -105,6 +112,12 @@ void SceneGame::Update(float dt)
 		magazine->SetTexture("graphics/fullmagazine.png");
 	}
 
+	test->SetPosition({ 300.f,player->GetPosition().y});
+
+	if (Utils::Distance(test->GetPosition(), crosshair->GetPosition()) <= abs(80.f))
+	{
+		crosshair->SetPosition({ test->GetPosition().x,test->GetPosition().y - (test->GetGlobalBounds().height*0.7f)});
+	}
 }
 
 void SceneGame::FixedUpdate(float dt)

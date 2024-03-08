@@ -15,6 +15,8 @@ protected:
 	Gun* gun;
 	SpriteGo* magazine;
 	Player* player;
+	SpriteGo* test;
+
 
 	float speed = 100.f;
 	sf::Vector2f firedirection = { 0.f,0.f };

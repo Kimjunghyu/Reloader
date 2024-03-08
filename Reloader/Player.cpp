@@ -14,7 +14,7 @@ void Player::Init()
 	animator.SetTarget(&sprite);
 
 	playerArm = new SpriteGo("arm");
-	playerArm->SetTexture("graphics/playerarm1.png");
+	playerArm->SetTexture("graphics/arm1.png");
 	playerArm->SetOrigin(Origins::ML);
 	playerArm->SetPosition({ 0.f,0.f });
 }
