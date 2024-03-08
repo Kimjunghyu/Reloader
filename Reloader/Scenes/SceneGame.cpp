@@ -90,6 +90,7 @@ void SceneGame::Update(float dt)
 	crosshair->SetPosition(ScreenToWorld((sf::Vector2i)InputMgr::GetMousePos()));
 
 	sf::Vector2f worldViewCenter = worldView.getCenter();
+
 	worldViewCenter = Utils::Lerp(worldViewCenter, player->GetPosition(), dt * 3.f);
 	worldView.setCenter(worldViewCenter);
 
@@ -117,7 +118,7 @@ void SceneGame::Update(float dt)
 
 		if (InputMgr::GetMouseButton(sf::Mouse::Right))
 		{
-			crosshair->SetScale({ 1.5,1.5 });
+			crosshair->SetScale({ 1.5f,1.5f });
 			crosshair->SetPosition({ enemy->GetPosition().x,enemy->GetPosition().y - (enemy->GetGlobalBounds().height - 5.f) });
 			player->SetPlayerArmAngle(crosshair->GetPosition());
 			EnemyHit(100);

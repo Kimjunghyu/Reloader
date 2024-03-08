@@ -15,6 +15,9 @@ protected:
 	sf::Vector2f armPos;
 	SpriteGo* playerArm;
 
+	float concent = 0.f;
+	float maxConcent = 100.f;
+
 	SceneGame* sceneGame = nullptr;
 	bool moveArm = false;
 public:

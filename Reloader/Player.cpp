@@ -94,6 +94,7 @@ void Player::Update(float dt)
 	{
 		playerArm->SetFlipY(false);
 	}
+
 }
 
 void Player::Draw(sf::RenderWindow& window)

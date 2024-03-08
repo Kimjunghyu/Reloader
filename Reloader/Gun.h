@@ -12,6 +12,7 @@ protected:
 	Animator animator;
 	SceneGame* sceneGame;
 	SpriteGo* bullet;
+	/*SpriteGo* effect;*/
 	Player* player;
 	Effect* effect = nullptr;
 

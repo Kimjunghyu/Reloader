@@ -30,6 +30,8 @@ protected:
 	ResourceMgr<sf::Texture>& texResMgr;
 	ResourceMgr<sf::Font>& fontResMgr;
 	ResourceMgr<sf::SoundBuffer>& soundResMgr;
+
+	float current = 0.3;
 public:
 	Scene(SceneIds id);
 	virtual ~Scene() = default;

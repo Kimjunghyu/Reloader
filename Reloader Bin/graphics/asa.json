@@ -1,0 +1,20 @@
+{"frames": [
+
+{
+	"filename": "idle3.png",
+	"frame": {"x":1,"y":1,"w":29,"h":82},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":2,"y":2,"w":29,"h":82},
+	"sourceSize": {"w":33,"h":84}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "asa.png",
+	"format": "RGBA8888",
+	"size": {"w":31,"h":84},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:6f259780b10a422bd337b313ce7fa7f0:51688bdbd1e817bc389522a6e5c33eab:0ed6fa80a183d7c66e44e4f95d3280cb$"
+}
+}

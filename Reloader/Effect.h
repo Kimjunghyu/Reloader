@@ -10,6 +10,8 @@ protected:
 	Animator animator;
 	Player* player = nullptr;
 	SceneGame* sceneGame = nullptr;
+
+	sf::Vector2f effectPos;
 public:
 	Effect(const std::string& name = "");
 	~Effect() override = default;

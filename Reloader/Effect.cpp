@@ -48,14 +48,26 @@ void Effect::Update(float dt)
 
 	animator.Update(dt);
 
-	float effectPosX = player->GetGlobalBounds().left + player->GetGlobalBounds().width + 3.f;
-	float effectPosY = player->GetPlayerArm()->GetGlobalBounds().top + player->GetPlayerArm()->GetGlobalBounds().height * 0.5f - 10.f;
-	SetPosition({ effectPosX ,effectPosY });
-	SetRotation(player->GetPlayerArm()->GetRotation());
 
 	sf::Vector2f look = SCENE_MGR.GetCurrentScene()->FindGo("cross")->GetPosition();
 	look -= GetPosition();
 	SetRotation(Utils::Angle(look));
+
+	if (look.x < 0)
+	{
+		effectPos.x = player->GetGlobalBounds().left - 3.f;
+		effectPos.y = player->GetPlayerArm()->GetGlobalBounds().top + player->GetPlayerArm()->GetGlobalBounds().height * 0.5f + 10.f;
+		SetPosition(effectPos);
+	}
+	else if(look.x > 0)
+	{
+		effectPos.x = player->GetGlobalBounds().left + player->GetGlobalBounds().width + 3.f;
+		effectPos.y = player->GetPlayerArm()->GetGlobalBounds().top + player->GetPlayerArm()->GetGlobalBounds().height * 0.5f - 10.f;
+		SetPosition(effectPos);
+	}
+
+
+	SetRotation(player->GetPlayerArm()->GetRotation());
 }
 
 void Effect::Draw(sf::RenderWindow& window)
