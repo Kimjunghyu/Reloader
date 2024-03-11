@@ -140,11 +140,35 @@ void SceneGame::Update(float dt)
 		crosshair->SetTexture("graphics/MouseTarget.png");
 	}
 
-	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
+	//if (InputMgr::GetKeyDown(sf::Keyboard::Space)) //test
+	//{
+	//	enemy->EnemyHpSet(100);
+	//	enemy->SetActive(true);
+	//}
+
+	if (player->GetPosition().y == 335.f)
 	{
-		enemy->EnemyHpSet(100);
-		enemy->SetActive(true);
+		if (player->GetPosition().x >= 700.f)
+		{
+			player->SetPosition({ player->GetPosition().x - 75.f, -70.f });
+		}
+		else if (player->GetPosition().x <= -400.f)
+		{
+			player->SetPosition({ -800.f,-70.f });
+		}
 	}
+	if (player->GetPosition().y == -70.f)
+	{
+		if (player->GetPosition().x >= 700.f)
+		{
+			player->SetPosition({ player->GetPosition().x - 75.f, 335.f });
+		}
+		else if (player->GetPosition().x <= -850.f)
+		{
+			player->SetPosition({ -350.f, 335.f });
+		}
+	}
+
 }
 
 void SceneGame::FixedUpdate(float dt)

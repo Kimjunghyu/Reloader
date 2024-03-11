@@ -13,7 +13,6 @@ void Enemy::Init()
 	SetTexture("graphics/test.png");
 	SetPosition({ 0.f,0.f });
 	SetOrigin(Origins::BC);
-	SetFlipX(true);
 
 	textMsg = new TextGo("textMsg");
 	textMsg->Set(RES_MGR_FONT.Get("fonts/Pixel_Digivolve_Cyrillic_font.ttf"), "", 20, sf::Color::Green);
@@ -26,7 +25,7 @@ void Enemy::Reset()
 {
 	SpriteGo::Reset();
 	player = dynamic_cast<Player*>(SCENE_MGR.GetCurrentScene()->FindGo("Player"));
-	SetPosition({ 200.f,player->GetPosition().y });
+	SetPosition({ 150.f,player->GetPosition().y });
 	hp = 100;
 }
 
@@ -34,7 +33,7 @@ void Enemy::Update(float dt)
 {
 	SpriteGo::Update(dt);
 
-	SetPosition({ 200.f,player->GetPosition().y });
+	SetPosition({ 150.f,player->GetPosition().y });
 	sf::Vector2f EnemyPos = GetPosition();
 	textMsg->SetPosition({ EnemyPos.x,EnemyPos.y - 100.f });
 
@@ -43,6 +42,15 @@ void Enemy::Update(float dt)
 	{
 		textMsg->SetString("");
 	}
+	if (player->GetPosition().x >= GetPosition().x)
+	{
+		SetFlipX(false);
+	}
+	else
+	{
+		SetFlipX(true);
+	}
+
 }
 
 void Enemy::Draw(sf::RenderWindow& window)
