@@ -37,8 +37,6 @@ public:
 	~Gun()override;
 	void TestInstance();
 	void MissFire();
-	//void EmptyMagazine();
-	//void checkMagazie();
 
 	void Init() override;
 	void Reset() override;

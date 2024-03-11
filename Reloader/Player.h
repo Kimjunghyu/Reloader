@@ -13,7 +13,9 @@ protected:
 	float speed = 200.f;
 
 	sf::Vector2f armPos;
+	sf::Vector2f gunPos;
 	SpriteGo* playerArm;
+	SpriteGo* playerGun;
 
 	float concent = 0.f;
 	float maxConcent = 100.f;

@@ -29,6 +29,10 @@ void InputMgr::Init()
     infoV.positives.push_back(sf::Keyboard::Down);
     infoV.negatives.push_back(sf::Keyboard::W);
     infoV.negatives.push_back(sf::Keyboard::Up);
+    infoV.negatives.push_back(sf::Keyboard::Num1);
+    infoV.negatives.push_back(sf::Keyboard::Num2);
+    infoV.negatives.push_back(sf::Keyboard::Num3);
+    infoV.negatives.push_back(sf::Keyboard::Num4);
     infoV.sensi = 8.f;
     infoV.value = 0.f;
     axisInfoMap.insert({ infoV.axis, infoV });

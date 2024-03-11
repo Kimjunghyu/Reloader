@@ -13,6 +13,96 @@ void UiHud::SetResoultion(const sf::Vector2f resoution)
 void UiHud::Update(float dt)
 {
 	GameObject::Update(dt);
+
+	sf::Vector2f windowSize = (sf::Vector2f)FRAMEWORK.GetWindowSize();
+	sf::Vector2f centerPos = windowSize * 0.5f;
+
+	sf::Vector2f frame1Pos = frame1.GetPosition();
+	sf::Vector2f frame2Pos = frame2.GetPosition();
+	sf::Vector2f frame3Pos = frame3.GetPosition();
+	sf::Vector2f frame4Pos = frame4.GetPosition();
+
+	if (InputMgr::GetKey(sf::Keyboard::Num1))
+	{
+		frame1Pos.y -=speed * dt;
+		frame1.SetPosition(frame1Pos);
+		if (frame1Pos.y <= 500.f)
+		{
+			frame1Pos.y = 500.f;
+			frame1.SetPosition(frame1Pos);
+		}
+	}
+	else
+	{
+		frame1Pos.y += speed * dt;
+		frame1.SetPosition(frame1Pos);
+		if (frame1Pos.y >= 800.f)
+		{
+			frame1Pos.y = 800.f;
+			frame1.SetPosition(frame1Pos);
+		}
+	}
+	if (InputMgr::GetKey(sf::Keyboard::Num2))
+	{
+		frame2Pos.y -= speed * dt;
+		frame2.SetPosition(frame2Pos);
+		if (frame2Pos.y <= 500.f)
+		{
+			frame2Pos.y = 500.f;
+			frame2.SetPosition(frame2Pos);
+		}
+	}
+	else
+	{
+		frame2Pos.y += speed * dt;
+		frame2.SetPosition(frame2Pos);
+		if (frame2Pos.y >= 800.f)
+		{
+			frame2Pos.y = 800.f;
+			frame2.SetPosition(frame2Pos);
+		}
+	}
+	if (InputMgr::GetKey(sf::Keyboard::Num3))
+	{
+		frame3Pos.y -= speed * dt;
+		frame3.SetPosition(frame3Pos);
+		if (frame3Pos.y <= 500.f)
+		{
+			frame3Pos.y = 500.f;
+			frame3.SetPosition(frame3Pos);
+		}
+	}
+	else
+	{
+		frame3Pos.y += speed * dt;
+		frame3.SetPosition(frame3Pos);
+		if (frame3Pos.y >= 800.f)
+		{
+			frame3Pos.y = 800.f;
+			frame3.SetPosition(frame3Pos);
+		}
+	}
+	if (InputMgr::GetKey(sf::Keyboard::Num4))
+	{
+		frame4Pos.y -= speed * dt;
+		frame4.SetPosition(frame4Pos);
+		if (frame4Pos.y <= 500.f)
+		{
+			frame4Pos.y = 500.f;
+			frame4.SetPosition(frame4Pos);
+		}
+	}
+	else
+	{
+		frame4Pos.y += speed * dt;
+		frame4.SetPosition(frame4Pos);
+		if (frame4Pos.y >= 800.f)
+		{
+			frame4Pos.y = 800.f;
+			frame4.SetPosition(frame4Pos);
+		}
+	}
+
 }
 
 void UiHud::Init()
@@ -21,22 +111,33 @@ void UiHud::Init()
 	frame2.Init();
 	frame3.Init();
 	frame4.Init();
+	handFrame.Init();
 
 	frame1.SetTexture("graphics/inventoryFrame1.png");
 	frame2.SetTexture("graphics/inventoryFrame2.png");
 	frame3.SetTexture("graphics/inventoryFrame3.png");
 	frame4.SetTexture("graphics/inventoryFrame4.png");
+	handFrame.SetTexture("graphics/inventoryFrame.png");
 
-	frame1.SetOrigin(Origins::TC);
-	frame2.SetOrigin(Origins::TC);
-	frame3.SetOrigin(Origins::TC);
-	frame4.SetOrigin(Origins::TC);
+	frame1.SetScale({ 2.f,2.f });
+	frame2.SetScale({ 2.f,2.f });
+	frame3.SetScale({ 2.f,2.f });
+	frame4.SetScale({ 2.f,2.f });
+	handFrame.SetScale({ 2.f,2.f });
 
-	referenceResolution = (sf::Vector2f)FRAMEWORK.GetWindowSize();
-	frame1.SetPosition({ 25.f,referenceResolution.y - 25 });
-	frame2.SetPosition({ 125.f,referenceResolution.y - 25 });
-	frame3.SetPosition({ 225.f,referenceResolution.y - 25 });
-	frame4.SetPosition({ 325.f,referenceResolution.y - 25 });
+	frame1.SetOrigin(Origins::TL);
+	frame2.SetOrigin(Origins::TL);
+	frame3.SetOrigin(Origins::TL);
+	frame4.SetOrigin(Origins::TL);
+	handFrame.SetOrigin(Origins::TL);
+
+	frame1.SetPosition({ -300.f,800.f });
+	frame2.SetPosition({ -100.f,800.f});
+	frame3.SetPosition({ 100.f,800.f });
+	frame4.SetPosition({ 300.f,800.f });
+	handFrame.SetPosition({ 850.f,600.f });
+
+	speed = 1500.f;
 }
 
 void UiHud::Reset()
@@ -56,4 +157,5 @@ void UiHud::Draw(sf::RenderWindow& window)
 	frame2.Draw(window);
 	frame3.Draw(window);
 	frame4.Draw(window);
+	handFrame.Draw(window);
 }

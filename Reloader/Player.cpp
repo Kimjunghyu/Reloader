@@ -17,6 +17,12 @@ void Player::Init()
 	playerArm->SetTexture("graphics/arm1.png");
 	playerArm->SetOrigin(Origins::ML);
 	playerArm->SetPosition({ 0.f,0.f });
+
+	playerGun = new SpriteGo("Gun");
+	playerGun->SetTexture("graphics/mingunBody.png");
+	playerGun->SetOrigin(Origins::ML);
+	playerGun->SetPosition({ 0.f,0.f });
+
 }
 
 void Player::Release()
@@ -67,9 +73,10 @@ void Player::Update(float dt)
 	SetPosition(pos);
 
 	armPos.x = (sprite.getPosition().x);
-	armPos.y = (sprite.getGlobalBounds().top + 20.f);
+	armPos.y = (sprite.getGlobalBounds().top+30.f);
 
 	look = mouseWorldPos - position;
+	sf::Vector2f gunDirection = look;
 	Utils::Normalize(look);
 	if (!moveArm)
 	{
@@ -77,6 +84,10 @@ void Player::Update(float dt)
 	}
 
 	playerArm->SetPosition(armPos);
+
+	//gunPos.x = playerArm->GetGlobalBounds().width * gunDirection.x * 0.5;
+	//gunPos.y = playerArm->GetGlobalBounds().height * gunDirection.y * 0.5;
+	//playerGun->SetPosition(gunPos);
 
 	if (look.x < 0)
 	{
@@ -101,6 +112,7 @@ void Player::Draw(sf::RenderWindow& window)
 {
 	SpriteGo::Draw(window);
 	playerArm->Draw(window);
+	playerGun->Draw(window);
 }
 
 void Player::SetPlayerArmAngle(sf::Vector2f v)

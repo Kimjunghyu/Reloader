@@ -47,7 +47,7 @@ void SceneGame::Init()
 	AddGo(magazine, Scene::Ui);
 
 	hud = new UiHud("Hud");
-	hud->SetOrigin(Origins::BL);
+//	hud->SetOrigin(Origins::BL);
 	hud->SetPosition(centerPos);
 	AddGo(hud, Scene::Ui);
 

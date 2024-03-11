@@ -39,9 +39,6 @@ void Gun::Init()
 
 	effect = new Effect("effect");
 	SCENE_MGR.GetCurrentScene()->AddGo(effect);
-
-	//effect = new SpriteGo("effect");
-	//effect->SetTexture("graphics/")
 }
 
 void Gun::Reset()
