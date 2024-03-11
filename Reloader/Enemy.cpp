@@ -61,7 +61,15 @@ void Enemy::Draw(sf::RenderWindow& window)
 
 void Enemy::Onhit(int d)
 {
-	hp -= d;
+	if (Utils::RandomRange(0.f, 100.f) < concentration)
+	{
+		hp -= d;
+		textMsg->SetString(std::to_string(d));
+	}
+	else
+	{
+		hp -= 0;
+	}
 	textMsg->SetActive(true);
 	timer = 0;
 	if (hp <= 0)
@@ -69,5 +77,5 @@ void Enemy::Onhit(int d)
 		hp = 0;
 		//SetActive(false);
 	}
-	textMsg->SetString(std::to_string(d));
+
 }

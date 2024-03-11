@@ -2,6 +2,8 @@
 #include "Gun.h"
 #include "Effect.h"
 #include "SceneGame.h"
+#include "UiMsg.h"
+#include "UiHud.h"
 
 Gun::Gun(const std::string& name)
 	:SpriteGo(name)
@@ -39,6 +41,10 @@ void Gun::Init()
 
 	effect = new Effect("effect");
 	SCENE_MGR.GetCurrentScene()->AddGo(effect);
+
+	uiMsg = new UiMsg("uiMsg");
+
+	uiHud = new UiHud("uiHud");
 }
 
 void Gun::Reset()
@@ -47,6 +53,8 @@ void Gun::Reset()
 
 	player = dynamic_cast<Player*>(SCENE_MGR.GetCurrentScene()->FindGo("Player"));
 	effect = dynamic_cast<Effect*>(SCENE_MGR.GetCurrentScene()->FindGo("effect"));
+	uiMsg = dynamic_cast<UiMsg*>(SCENE_MGR.GetCurrentScene()->FindGo("uiMsg"));
+	uiHud = dynamic_cast<UiHud*>(SCENE_MGR.GetCurrentScene()->FindGo("Hud"));
 	sceneGame = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
 
 	std::function<void()> funcInstance = std::bind(&Gun::TestInstance, this);
@@ -72,6 +80,7 @@ void Gun::Update(float dt)
 		if (Utils::RandomRange(0,100) < 95)
 		{
 			animator.PlayQueue("animations/Gunreturn.csv");
+			//sceneGame->AddConcent(10);
 		}
 		else
 		{
@@ -85,6 +94,14 @@ void Gun::Update(float dt)
 		std::cout << bulletCount << std::endl;
 		isFiring = false;
 		onTarget = true;
+	}
+	if (missFire)
+	{
+		uiMsg->GetKeyE(true);
+	}
+	else if (!missFire)
+	{
+		uiMsg->GetKeyE(false);
 	}
 	if (timer == 0)
 	{
@@ -104,11 +121,13 @@ void Gun::Update(float dt)
 
 		animator.Play("animations/Gun.csv");
 		animator.PlayQueue("animations/Gunreturn.csv");
+		uiMsg->GetKeyE(true);
 	}
 	if (InputMgr::GetKey(sf::Keyboard::E))
 	{
 		anistop = true;
 		isFiring = false;
+		uiMsg->GetKeyE(true);
 		if (bulletCount > 0&&InputMgr::GetKeyDown(sf::Keyboard::T))
 		{
 			bulletCount -= 1;
@@ -116,14 +135,38 @@ void Gun::Update(float dt)
 			anistop = false;
 			isFiring = true;
 			animator.Resume();
+			uiMsg->GetKeyE_T(true);
 		}
 	}
+	else
+	{
+		uiMsg->GetKeyE(false);
+		uiMsg->GetKeyE_T(false);
+	}
+
 	if (InputMgr::GetKeyUp(sf::Keyboard::E))
 	{
 		animator.Resume();
 		anistop = false;
 	}
+	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
+	{
+		uiHud->SetHandMagazine(abs(1 - bulletCount));
+		bulletCount = 1;
+	}
+
 
 	SpriteGo::Update(dt);
-	
+}
+
+bool Gun::GetEmptyBullet()
+{
+	if (bulletCount <= 0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }

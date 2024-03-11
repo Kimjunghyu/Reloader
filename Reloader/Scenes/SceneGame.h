@@ -7,6 +7,7 @@ class SpriteGo;
 class Gun;
 class Enemy;
 class Effect;
+class UiMsg;
 
 class SceneGame : public Scene
 {
@@ -19,12 +20,15 @@ protected:
 	Player* player;
 	Enemy* enemy = nullptr;
 	Effect* effect;
+	UiMsg* uiMsg;
 
 	float speed = 100.f;
 	sf::Vector2f firedirection = { 0.f,0.f };
 	sf::Vector2f direction = { 1.f,0.f };
 	float timer = 0.f;
+	float fireTimer = 0.f;
 	float delay = 1.0;
+	int conCent = 100.f;
 
 	int bulletMagazine;
 	bool isFiring = false;
@@ -49,5 +53,6 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 
 	void EnemyHit(int d);
+	void AddConcent(int i);
 };
 

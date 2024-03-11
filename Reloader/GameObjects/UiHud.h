@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "SpriteGo.h"
 #include "TextGo.h"
+#include "Gun.h"
 
 class UiHud : public GameObject
 {
@@ -11,6 +12,9 @@ protected:
 	SpriteGo frame3;
 	SpriteGo frame4;
 	SpriteGo handFrame;
+	SpriteGo handMagazine;
+
+	Gun* gun;
 
 	float speed;
 
@@ -24,6 +28,9 @@ protected:
 	sf::Vector2f frame2Pos;
 	sf::Vector2f frame3Pos;
 	sf::Vector2f frame4Pos;
+	sf::Vector2f magazinePos;
+
+	int handBullet = 0;
 
 public:
 	UiHud(const std::string& name = "");
@@ -36,5 +43,7 @@ public:
 	void Init() override;
 	void Reset() override;
 	void Draw(sf::RenderWindow& window) override;
+
+	void SetHandMagazine(int i);
 };
 

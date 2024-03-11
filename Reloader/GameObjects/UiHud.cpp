@@ -102,6 +102,18 @@ void UiHud::Update(float dt)
 			frame4.SetPosition(frame4Pos);
 		}
 	}
+	magazinePos.x = (handFrame.GetGlobalBounds().left + handFrame.GetGlobalBounds().width);
+	magazinePos.y = (handFrame.GetGlobalBounds().top + handFrame.GetGlobalBounds().height);
+	handMagazine.SetPosition(magazinePos);
+
+	if (handBullet > 0)
+	{
+		handMagazine.SetTexture("graphics/fullmagazine.png");
+	}
+	else if (handBullet <= 0)
+	{
+		handMagazine.SetTexture("graphics/emptymagazine.png");
+	}
 
 }
 
@@ -112,32 +124,39 @@ void UiHud::Init()
 	frame3.Init();
 	frame4.Init();
 	handFrame.Init();
+	handMagazine.Init();
 
 	frame1.SetTexture("graphics/inventoryFrame1.png");
 	frame2.SetTexture("graphics/inventoryFrame2.png");
 	frame3.SetTexture("graphics/inventoryFrame3.png");
 	frame4.SetTexture("graphics/inventoryFrame4.png");
 	handFrame.SetTexture("graphics/inventoryFrame.png");
+	handMagazine.SetTexture("graphics/emptymagazine.png");
 
 	frame1.SetScale({ 2.f,2.f });
 	frame2.SetScale({ 2.f,2.f });
 	frame3.SetScale({ 2.f,2.f });
 	frame4.SetScale({ 2.f,2.f });
 	handFrame.SetScale({ 2.f,2.f });
+	handMagazine.SetScale({ 2.f,2.f });
 
 	frame1.SetOrigin(Origins::TL);
 	frame2.SetOrigin(Origins::TL);
 	frame3.SetOrigin(Origins::TL);
 	frame4.SetOrigin(Origins::TL);
 	handFrame.SetOrigin(Origins::TL);
+	handMagazine.SetOrigin(Origins::BR);
 
 	frame1.SetPosition({ -300.f,800.f });
 	frame2.SetPosition({ -100.f,800.f});
 	frame3.SetPosition({ 100.f,800.f });
 	frame4.SetPosition({ 300.f,800.f });
 	handFrame.SetPosition({ 850.f,600.f });
+	handMagazine.SetPosition({ 0.f,0.f });
 
 	speed = 1500.f;
+
+	gun = new Gun("gun");
 }
 
 void UiHud::Reset()
@@ -158,4 +177,10 @@ void UiHud::Draw(sf::RenderWindow& window)
 	frame3.Draw(window);
 	frame4.Draw(window);
 	handFrame.Draw(window);
+	handMagazine.Draw(window);
+}
+
+void UiHud::SetHandMagazine(int i)
+{
+	handBullet = i;
 }

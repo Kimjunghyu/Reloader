@@ -13,7 +13,11 @@ public:
 	sf::FloatRect GetGlobalBounds() override;
 
 	void SetString(const std::string& str);
+	void SetString(const std::wstring& str);
+
 	void Set(const sf::Font& texture, const std::string& str, int size, const sf::Color& color);
+	void SetFillColor(const sf::Color& color);
+
 
 	void SetFont(const std::string& textureId);
 	void SetFont(const sf::Font& texture);

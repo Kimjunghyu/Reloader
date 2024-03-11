@@ -5,6 +5,8 @@
 
 class SceneGame;
 class Effect;
+class UiMsg;
+class UiHud;
 
 class Gun : public SpriteGo
 {
@@ -15,6 +17,8 @@ protected:
 	/*SpriteGo* effect;*/
 	Player* player;
 	Effect* effect = nullptr;
+	UiMsg* uiMsg;
+	UiHud* uiHud;
 
 	float gravity = 500.f;
 	float speed = 400.f;
@@ -23,6 +27,7 @@ protected:
 	int bulletCount = 6;
 	float timer = 0.f;
 	float fireinterval = 1.0f;
+
 	sf::Vector2f bulletFiring = { 1.f,-1.f };
 	sf::Vector2f Direction = { 1.f, 1.f };
 	sf::Vector2f bulletPos;
@@ -45,6 +50,7 @@ public:
 	bool GetisFiring(bool isFiring) { return isFiring; }
 	int GetBulletCount() { return bulletCount; }
 
+	bool GetEmptyBullet();
 	bool GetOnTarget() { return onTarget; }
 };
 

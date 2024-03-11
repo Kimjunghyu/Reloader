@@ -12,6 +12,7 @@ protected:
 
 	TextGo* textMsg;
 	float timer;
+	int concentration;
 public:
 	Enemy(const std::string& name = "");
 	~Enemy() override = default;
@@ -24,5 +25,6 @@ public:
 	void Onhit(int d);
 
 	void EnemyHpSet(int h) { hp = h; }
+	void SetConcent(int i) { concentration = i; }
 };
 

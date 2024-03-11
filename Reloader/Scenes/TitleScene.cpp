@@ -26,7 +26,7 @@ void TitleScene::Init()
 	AddGo(title);
 
 	uiText = new TextGo("uiText");
-	uiText->Set(fontResMgr.Get("fonts/EightBitDragon-anqx.ttf"), "", 75, sf::Color::White);
+	uiText->Set(fontResMgr.Get("fonts/EightBitDragonanqx.ttf"), "", 75, sf::Color::White);
 	uiText->SetString("Press Enter To Start!");
 	uiText->SetPosition({ 1920.f / 2, 1080.f - 200 });
 	uiText->SetOrigin(Origins::MC);

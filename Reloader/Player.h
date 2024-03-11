@@ -17,7 +17,6 @@ protected:
 	SpriteGo* playerArm;
 	SpriteGo* playerGun;
 
-	float concent = 0.f;
 	float maxConcent = 100.f;
 
 	SceneGame* sceneGame = nullptr;
