@@ -173,6 +173,7 @@
     <ClCompile Include="Scenes\TitleScene.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Spawner.cpp" />
     <ClCompile Include="UiMsg.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -207,6 +208,7 @@
     <ClInclude Include="Scenes\TitleScene.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="Spawner.h" />
     <ClInclude Include="UiMsg.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

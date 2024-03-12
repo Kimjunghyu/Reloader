@@ -6,9 +6,23 @@ class Player;
 
 class Enemy : public SpriteGo
 {
+public:
+	enum class Types
+	{
+		Distance,
+		Melee,
+	};
+	static const int TotalTypes = 2;
+	static Enemy* Create(Types enemyTypes);
+
 protected:
+	Types type;
+
+	sf::Vector2f direction = { 0.f,0.f };
+
 	Player* player = nullptr;
 	int hp = 100;
+	float speed = 100.f;
 
 	TextGo* textMsg;
 	float timer;

@@ -108,11 +108,11 @@ void SceneGame::Update(float dt)
 	bulletMagazine = gun->GetBulletCount();
 	uiMsg->GetBullet(bulletMagazine);
 
-	if (bulletMagazine <= 0)
+	if (bulletMagazine <= 0 || !onMagazine)
 	{
 		magazine->SetTexture("graphics/emptymagazine.png");
 	}
-	else
+	else if(bulletMagazine > 0 || onMagazine)
 	{
 		magazine->SetTexture("graphics/fullmagazine.png");
 	}
@@ -132,6 +132,7 @@ void SceneGame::Update(float dt)
 			player->SetPlayerArmAngle(crosshair->GetPosition());
 			EnemyHit(100);
 			uiMsg->GetRmc(true);
+			uiMsg->GetKeyS(false);
 			if (InputMgr::GetMouseButtonDown(sf::Mouse::Left)&&bulletMagazine != 0 && fireTimer >= 1)
 			{
 				conCent -= 10;
@@ -150,6 +151,7 @@ void SceneGame::Update(float dt)
 			player->SetPlayerArmAngle(crosshair->GetPosition());
 			EnemyHit(40);
 			uiMsg->GetKeyS(true);
+			uiMsg->GetRmc(false);
 		}
 		else
 		{
@@ -212,6 +214,14 @@ void SceneGame::Update(float dt)
 			uiMsg->UiConcent(conCent);
 		}
 		timer = 0;
+	}
+	if (Utils::Distance(player->GetPosition(), enemy->GetPosition()) < 250.f)
+	{
+		uiMsg->GetDisCover(true);
+	}
+	else
+	{
+		uiMsg->GetDisCover(false);
 	}
 }
 

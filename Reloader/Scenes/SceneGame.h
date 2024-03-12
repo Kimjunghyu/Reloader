@@ -32,6 +32,7 @@ protected:
 
 	int bulletMagazine;
 	bool isFiring = false;
+	bool onMagazine = true;
 public:
 	SceneGame(SceneIds id);
 	~SceneGame() override = default;
@@ -54,5 +55,7 @@ public:
 
 	void EnemyHit(int d);
 	void AddConcent(int i);
+
+	void SetMagazine(bool b) { onMagazine = b; }
 };
 

@@ -14,7 +14,7 @@ protected:
 	Animator animator;
 	SceneGame* sceneGame;
 	SpriteGo* bullet;
-	/*SpriteGo* effect;*/
+
 	Player* player;
 	Effect* effect = nullptr;
 	UiMsg* uiMsg;
@@ -25,6 +25,7 @@ protected:
 	sf::Vector2f pos;
 
 	int bulletCount = 6;
+	int getBullet = 0;
 	float timer = 0.f;
 	float fireinterval = 1.0f;
 
@@ -37,6 +38,7 @@ protected:
 	bool anistop = false;
 	bool missFire = false;
 	bool onTarget = false;
+	bool onMagazine = true;
 public:
 	Gun(const std::string& name = "");
 	~Gun()override;
@@ -50,7 +52,6 @@ public:
 	bool GetisFiring(bool isFiring) { return isFiring; }
 	int GetBulletCount() { return bulletCount; }
 
-	bool GetEmptyBullet();
 	bool GetOnTarget() { return onTarget; }
 };
 

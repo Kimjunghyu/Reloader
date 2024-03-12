@@ -3,40 +3,38 @@
 #include "SpriteGo.h"
 #include "TextGo.h"
 #include "Gun.h"
+#include "UiMsg.h"
 
 class UiHud : public GameObject
 {
 protected:
-	SpriteGo frame1;
-	SpriteGo frame2;
-	SpriteGo frame3;
-	SpriteGo frame4;
+	SpriteGo frame[4];
 	SpriteGo handFrame;
 	SpriteGo handMagazine;
 
+	SpriteGo magazine[4];
+
 	Gun* gun;
+	UiMsg* uiMsg;
 
 	float speed;
 
 	sf::Vector2f direction = { 0.f, 0.f };
-	TextGo uiFps;
-
-	sf::Vector2f referenceResolution = { 1920.f, 1080.f };
-	sf::Vector2f resolution = referenceResolution;
 
 	sf::Vector2f frame1Pos;
 	sf::Vector2f frame2Pos;
 	sf::Vector2f frame3Pos;
 	sf::Vector2f frame4Pos;
 	sf::Vector2f magazinePos;
+	sf::Vector2f frameMagazinePos;
 
 	int handBullet = 0;
+	int frameBullet[4] = { 6, 6, 6, 6 };
 
+	bool onHandBullet = false;
 public:
 	UiHud(const std::string& name = "");
 	~UiHud() override = default;
-
-	void SetResoultion(const sf::Vector2f resoution);
 
 	void Update(float dt);
 
@@ -45,5 +43,7 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 
 	void SetHandMagazine(int i);
+
+	int GetHandBullet() {return handBullet;	}
 };
 

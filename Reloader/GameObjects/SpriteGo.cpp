@@ -90,27 +90,6 @@ void SpriteGo::SetFlipY(bool filp)
 	SetScale(scale);
 }
 
-void SpriteGo::Update(float dt)
-{
-	shape.setFillColor(sf::Color::Transparent);
-	shape.setOutlineThickness(5);
-	shape.setOutlineColor(sf::Color::Green);
-	hitBox.x = sprite.getGlobalBounds().width;
-	hitBox.y = sprite.getGlobalBounds().height;
-	shape.setSize(hitBox);
-	shape.setOrigin(hitBox.x/2,hitBox.y/2);
-	shape.setPosition(sprite.getPosition());
-
-	if (InputMgr::GetKeyDown(sf::Keyboard::F1))
-	{
-		test = true;
-	}
-	if (InputMgr::GetKeyDown(sf::Keyboard::F2))
-	{
-		test = false;
-	}
-}
-
 void SpriteGo::Reset()
 {
 	sprite.setTexture(RES_MGR_TEXTURE.Get(textureId));

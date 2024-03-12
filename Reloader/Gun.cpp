@@ -95,6 +95,14 @@ void Gun::Update(float dt)
 		isFiring = false;
 		onTarget = true;
 	}
+	if (bulletCount <= 0)
+	{
+		uiMsg->GetEmptyGun(true);
+	}
+	else if (bulletCount > 0)
+	{
+		uiMsg->GetEmptyGun(false);
+	}
 	if (missFire)
 	{
 		uiMsg->GetKeyE(true);
@@ -106,12 +114,6 @@ void Gun::Update(float dt)
 	if (timer == 0)
 	{
 		onTarget = false;
-	}
-
-	if (InputMgr::GetKeyDown(sf::Keyboard::R))
-	{
-		bulletCount = 6;
-		animator.Resume();
 	}
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::E))
@@ -149,24 +151,40 @@ void Gun::Update(float dt)
 		animator.Resume();
 		anistop = false;
 	}
-	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
+	if (InputMgr::GetKeyDown(sf::Keyboard::R))
 	{
-		uiHud->SetHandMagazine(abs(1 - bulletCount));
-		bulletCount = 1;
+		if (uiHud->GetHandBullet() > 0)
+		{
+			bulletCount = 0;
+		}
+		else if (uiHud->GetHandBullet() <= 0)
+		{
+			if (bulletCount > 0)
+			{
+				uiHud->SetHandMagazine(abs(1 - bulletCount));
+				bulletCount = 1;
+			}
+			else if (bulletCount <= 0)
+			{
+				uiHud->SetHandMagazine(0);
+				bulletCount = 0;
+			}
+		}
+		onMagazine = false;
 	}
-
+	if (InputMgr::GetKeyDown(sf::Keyboard::W) && !onMagazine)
+	{
+		getBullet = uiHud->GetHandBullet();
+		bulletCount += getBullet;
+		getBullet = 0;
+		uiHud->SetHandMagazine(0);
+		onMagazine = true;
+		animator.Resume();
+	}
+	//if (InputMgr::GetKeyDown(sf::Keyboard::Space)) //test
+	//{
+	//	bulletCount = 6;
+	//}
 
 	SpriteGo::Update(dt);
-}
-
-bool Gun::GetEmptyBullet()
-{
-	if (bulletCount <= 0)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
 }

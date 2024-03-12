@@ -2,6 +2,16 @@
 #include "Enemy.h"
 #include "Player.h"
 
+Enemy* Enemy::Create(Types enemyTypes)
+{
+	Enemy* enemy = new Enemy("enemy");
+	enemy->type = enemyTypes;
+
+	enemy->hp = 100;
+	enemy->speed = 100.f;
+	return enemy;
+}
+
 Enemy::Enemy(const std::string& name)
 	:SpriteGo(name)
 {
@@ -33,15 +43,11 @@ void Enemy::Update(float dt)
 {
 	SpriteGo::Update(dt);
 
-	SetPosition({ 150.f,player->GetPosition().y });
-	sf::Vector2f EnemyPos = GetPosition();
-	textMsg->SetPosition({ EnemyPos.x,EnemyPos.y - 100.f });
+	sf::Vector2f enemyPos = GetPosition();
 
-	timer += dt;
-	if (timer >= 3.f)
-	{
-		textMsg->SetString("");
-	}
+	direction = player->GetPosition() - position;
+	Utils::Normalize(direction);
+
 	if (player->GetPosition().x >= GetPosition().x)
 	{
 		SetFlipX(false);
@@ -49,6 +55,27 @@ void Enemy::Update(float dt)
 	else
 	{
 		SetFlipX(true);
+	}
+	sf::Vector2f pos = position + direction * speed * dt;
+
+	SetPosition({pos.x,player->GetPosition().y});
+
+	if (Utils::Distance(player->GetPosition(), GetPosition()) < 200.f)
+	{
+		speed = 0;
+	}
+	else
+	{
+		speed = 100.f;
+	}
+
+	sf::Vector2f textPos = GetPosition();
+	textMsg->SetPosition({ textPos.x,textPos.y - 100.f });
+
+	timer += dt;
+	if (timer >= 3.f)
+	{
+		textMsg->SetString("");
 	}
 
 }
@@ -69,6 +96,7 @@ void Enemy::Onhit(int d)
 	else
 	{
 		hp -= 0;
+		textMsg->SetString("Miss");
 	}
 	textMsg->SetActive(true);
 	timer = 0;
@@ -76,6 +104,8 @@ void Enemy::Onhit(int d)
 	{
 		hp = 0;
 		//SetActive(false);
+		//SCENE_MGR.GetCurrentScene()->RemoveGo(this);
+		Create(type);
 	}
 
 }
