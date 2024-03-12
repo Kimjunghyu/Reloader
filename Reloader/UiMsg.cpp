@@ -96,20 +96,20 @@ void UiMsg::uiUpdate()
 	if (emptyGun)
 	{
 		uiMsg[0].SetFillColor(sf::Color::White);
-		if (handBullet)
+		if (onMagazine)
 		{
-			uiMsg[8].SetFillColor(sf::Color::Cyan);
+			uiMsg[6].SetFillColor(sf::Color::Cyan);
 		}
-		else if (!handBullet)
+		else if (!onMagazine)
 		{
-			uiMsg[8].SetFillColor(sf::Color::White);
+			uiMsg[6].SetFillColor(sf::Color::White);
+			uiMsg[9].SetFillColor(sf::Color::Cyan);
 		}
 	}
 	else if (!emptyGun)
 	{
 		uiMsg[0].SetFillColor(sf::Color::Cyan);
-		uiMsg[8].SetFillColor(sf::Color::White);
-		uiMsg[8].SetFillColor(sf::Color::White);
+		uiMsg[9].SetFillColor(sf::Color::White);
 	}
 	if (!handBullet)
 	{
@@ -130,28 +130,28 @@ void UiMsg::uiUpdate()
 	}
 	if (OnKeyS)
 	{
-		uiMsg[7].SetFillColor(sf::Color::Cyan);
+		uiMsg[8].SetFillColor(sf::Color::Cyan);
 	}
 	else if (!OnKeyS)
 	{
-		uiMsg[7].SetFillColor(sf::Color::White);
+		uiMsg[8].SetFillColor(sf::Color::White);
 	}
 	if (OnKeyE)
 	{
-		uiMsg[4].SetFillColor(sf::Color::Cyan);
+		uiMsg[5].SetFillColor(sf::Color::Cyan);
 	}
 	else if (!OnKeyE)
 	{
-		uiMsg[4].SetFillColor(sf::Color::White);
+		uiMsg[5].SetFillColor(sf::Color::White);
 	}
 	if (OnKeyE_T)
 	{
-		uiMsg[6].SetFillColor(sf::Color::Cyan);
+		uiMsg[7].SetFillColor(sf::Color::Cyan);
 		OnKeyE = false;
 	}
 	else if (!OnKeyE_T)
 	{
-		uiMsg[6].SetFillColor(sf::Color::White);
+		uiMsg[7].SetFillColor(sf::Color::White);
 	}
 	if (DisCover)
 	{

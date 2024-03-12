@@ -42,7 +42,10 @@ void SceneGame::Init()
 	magazine = new SpriteGo("magazine");
 	magazine->SetTexture("graphics/fullmagazine.png");
 	magazine->SetOrigin(Origins::TC);
-	magazine->SetPosition(centerPos);
+	gunPos = gun->GetPosition();
+	gunPos.x += 175.f;
+	gunPos.y += 10.f;
+	magazine->SetPosition(gunPos);
 	magazine->SetScale({ 2.f,2.f });
 	magazine->sortLayer = 0;
 	AddGo(magazine, Scene::Ui);
@@ -99,11 +102,6 @@ void SceneGame::Update(float dt)
 
 	worldViewCenter = Utils::Lerp(worldViewCenter, { player->GetPosition().x,player->GetPosition().y - 75.f}, dt * 3.f);
 	worldView.setCenter(worldViewCenter);
-
-	sf::Vector2f gunPos = gun->GetPosition();
-	gunPos.x += 175.f;
-	gunPos.y += 10.f;
-	magazine->SetPosition(gunPos);
 
 	bulletMagazine = gun->GetBulletCount();
 	uiMsg->GetBullet(bulletMagazine);

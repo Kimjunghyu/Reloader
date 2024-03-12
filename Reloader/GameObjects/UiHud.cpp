@@ -148,12 +148,30 @@ void UiHud::Update(float dt)
 
 	if (handBullet > 0)
 	{
+		if (handFramePos.y >= 600.f)
+		{
+			handFramePos.y -= speed * dt;
+			if (handFramePos.y <= 600)
+			{
+				handFramePos.y = 600.f;
+			}
+		}
+		handFrame.SetPosition(handFramePos);
 		handMagazine.SetTexture("graphics/fullmagazine.png");
 		handMagazine.SetActive(true);
 		uiMsg->GetHandBullet(true);
 	}
 	else if(handBullet <= 0)
 	{
+		if (handFramePos.y <= 800.f)
+		{
+			handFramePos.y += speed * dt;
+		}
+		else if (handFramePos.y >= 800.f)
+		{
+			handFramePos.y = 800.f;
+		}
+		handFrame.SetPosition(handFramePos);
 		handMagazine.SetTexture("graphics/emptymagazine.png");
 		handMagazine.SetActive(false);
 		uiMsg->GetHandBullet(false);
@@ -202,7 +220,7 @@ void UiHud::Init()
 	handFrame.SetOrigin(Origins::TL);
 	handMagazine.SetOrigin(Origins::BR);
 
-	handFrame.SetPosition({ 850.f,600.f });
+	handFrame.SetPosition(handFramePos);
 	handMagazine.SetPosition({ 0.f,0.f });
 
 	speed = 1500.f;

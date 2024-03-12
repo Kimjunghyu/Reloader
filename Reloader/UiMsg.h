@@ -21,6 +21,7 @@ protected:
 	bool OnKeyE_T = false;
 	bool DisCover = false;
 	bool emptyGun = false;
+	bool onMagazine = true;
 	int concent = 100;
 	int hp = 100;
 public:
@@ -50,5 +51,6 @@ public:
 	void GetDisCover(bool b) { DisCover = b; }
 	void GetHandBullet(bool b) { handBullet = b; }
 	void GetEmptyGun(bool b) { emptyGun = b; }
+	void GetMagazine(bool b) { onMagazine = b; }
 };
 

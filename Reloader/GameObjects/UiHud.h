@@ -21,6 +21,7 @@ protected:
 
 	sf::Vector2f direction = { 0.f, 0.f };
 
+	sf::Vector2f handFramePos = { 850.f,600.f };
 	sf::Vector2f frame1Pos;
 	sf::Vector2f frame2Pos;
 	sf::Vector2f frame3Pos;

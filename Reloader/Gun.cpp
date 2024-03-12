@@ -98,6 +98,14 @@ void Gun::Update(float dt)
 	if (bulletCount <= 0)
 	{
 		uiMsg->GetEmptyGun(true);
+		if (onMagazine)
+		{
+			uiMsg->GetMagazine(true);
+		}
+		else if (!onMagazine)
+		{
+			uiMsg->GetMagazine(false);
+		}
 	}
 	else if (bulletCount > 0)
 	{
@@ -178,13 +186,19 @@ void Gun::Update(float dt)
 		bulletCount += getBullet;
 		getBullet = 0;
 		uiHud->SetHandMagazine(0);
-		onMagazine = true;
+		if (bulletCount > 0)
+		{
+			onMagazine = true;
+		}
 		animator.Resume();
 	}
 	//if (InputMgr::GetKeyDown(sf::Keyboard::Space)) //test
 	//{
 	//	bulletCount = 6;
 	//}
-
+	if (InputMgr::GetKeyDown(sf::Keyboard::F1))
+	{
+		SetPosition({ GetPosition().x,100.f });
+	}
 	SpriteGo::Update(dt);
 }
