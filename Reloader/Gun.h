@@ -27,7 +27,7 @@ protected:
 	int bulletCount = 6;
 	int getBullet = 0;
 	float timer = 0.f;
-	float fireinterval = 1.0f;
+	float fireinterval = 0.5f;
 
 	sf::Vector2f bulletFiring = { 1.f,-1.f };
 	sf::Vector2f Direction = { 1.f, 1.f };

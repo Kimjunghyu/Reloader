@@ -119,7 +119,6 @@ void UiMsg::uiUpdate()
 	{
 		uiMsg[3].SetFillColor(sf::Color::White);
 	}
-
 	if (OnRmc)
 	{
 		uiMsg[1].SetFillColor(sf::Color::Cyan);

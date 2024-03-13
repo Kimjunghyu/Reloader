@@ -71,30 +71,36 @@ void Gun::Update(float dt)
 	if (timer >= fireinterval)
 	{
 		isFiring = true;
-		timer = 0;
-	}
-	if (isFiring && InputMgr::GetMouseButtonDown(sf::Mouse::Left) && bulletCount >0 && !missFire)
-	{
-		animator.Play("animations/Gun.csv");
+		sceneGame->SetFiring(true);
+		if (isFiring && InputMgr::GetMouseButtonDown(sf::Mouse::Left) && bulletCount > 0 && !missFire)
+		{
+			animator.Play("animations/Gun.csv");
 
-		if (Utils::RandomRange(0,100) < 95)
-		{
-			animator.PlayQueue("animations/Gunreturn.csv");
-			//sceneGame->AddConcent(10);
+			if (Utils::RandomRange(0, 100) < 95)
+			{
+				animator.PlayQueue("animations/Gunreturn.csv");
+				//sceneGame->AddConcent(10);
+				sceneGame->SetErrGun(false);
+			}
+			else
+			{
+				animator.Play("animations/Gunrerr.csv");
+				std::function<void()> errgun = std::bind(&Gun::MissFire, this);
+				animator.AddEvent("animations/Gunrerr.csv", 5, errgun);
+				missFire = true;
+				sceneGame->SetErrGun(true);
+			}
+			effect->Fire();
+			bulletCount -= 1;
+			std::cout << bulletCount << std::endl;
+			isFiring = false;
+			sceneGame->SetFiring(false);
+			onTarget = true;
+			timer = 0;
 		}
-		else
-		{
-			animator.Play("animations/Gunrerr.csv");
-			std::function<void()> errgun = std::bind(&Gun::MissFire, this);
-			animator.AddEvent("animations/Gunrerr.csv", 5, errgun);
-			missFire = true;
-		}
-		effect->Fire();
-		bulletCount -= 1;
-		std::cout << bulletCount << std::endl;
-		isFiring = false;
-		onTarget = true;
+
 	}
+	
 	if (bulletCount <= 0)
 	{
 		uiMsg->GetEmptyGun(true);
@@ -192,10 +198,10 @@ void Gun::Update(float dt)
 		}
 		animator.Resume();
 	}
-	//if (InputMgr::GetKeyDown(sf::Keyboard::Space)) //test
-	//{
-	//	bulletCount = 6;
-	//}
+	if (InputMgr::GetKeyDown(sf::Keyboard::Tab)) //test
+	{
+		bulletCount = 6;
+	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::F1))
 	{
 		SetPosition({ GetPosition().x,100.f });

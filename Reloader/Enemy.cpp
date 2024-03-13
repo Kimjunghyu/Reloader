@@ -1,14 +1,29 @@
 #include "pch.h"
 #include "Enemy.h"
 #include "Player.h"
+#include "EnemySpwaner.h"
+#include "SceneGame.h"
 
 Enemy* Enemy::Create(Types enemyTypes)
 {
 	Enemy* enemy = new Enemy("enemy");
 	enemy->type = enemyTypes;
 
-	enemy->hp = 100;
-	enemy->speed = 100.f;
+	switch (enemyTypes)
+	{
+	case Enemy::Types::Distance:
+		enemy->textureId = "graphics/test.png";
+		enemy->hp = 100;
+		enemy->speed = 100.f;
+		enemy->range = 200.f;
+		break;
+	case Enemy::Types::Melee:
+		enemy->textureId = "graphics/test2.png";
+		enemy->hp = 100;
+		enemy->speed = 110.f;
+		enemy->range = 10.f;
+		break;
+	}
 	return enemy;
 }
 
@@ -20,7 +35,7 @@ Enemy::Enemy(const std::string& name)
 void Enemy::Init()
 {
 	SpriteGo::Init();
-	SetTexture("graphics/test.png");
+	SetTexture(textureId);
 	SetPosition({ 0.f,0.f });
 	SetOrigin(Origins::BC);
 
@@ -34,7 +49,9 @@ void Enemy::Init()
 void Enemy::Reset()
 {
 	SpriteGo::Reset();
+	sceneGame = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
 	player = dynamic_cast<Player*>(SCENE_MGR.GetCurrentScene()->FindGo("Player"));
+	enemySpawner = dynamic_cast<EnemySpwaner*>(SCENE_MGR.GetCurrentScene()->FindGo("enemy"));
 	SetPosition({ 150.f,player->GetPosition().y });
 	hp = 100;
 }
@@ -42,8 +59,6 @@ void Enemy::Reset()
 void Enemy::Update(float dt)
 {
 	SpriteGo::Update(dt);
-
-	sf::Vector2f enemyPos = GetPosition();
 
 	direction = player->GetPosition() - position;
 	Utils::Normalize(direction);
@@ -56,11 +71,12 @@ void Enemy::Update(float dt)
 	{
 		SetFlipX(true);
 	}
+	
 	sf::Vector2f pos = position + direction * speed * dt;
 
 	SetPosition({pos.x,player->GetPosition().y});
 
-	if (Utils::Distance(player->GetPosition(), GetPosition()) < 200.f)
+	if (Utils::Distance(player->GetPosition(), GetPosition()) < range)
 	{
 		speed = 0;
 	}
@@ -77,7 +93,15 @@ void Enemy::Update(float dt)
 	{
 		textMsg->SetString("");
 	}
-
+	if (hp > 0)
+	{
+		ondie = false;
+	}
+	else if (hp <= 0)
+	{
+		ondie = true;
+		OnDie();
+	}
 }
 
 void Enemy::Draw(sf::RenderWindow& window)
@@ -88,24 +112,22 @@ void Enemy::Draw(sf::RenderWindow& window)
 
 void Enemy::Onhit(int d)
 {
-	if (Utils::RandomRange(0.f, 100.f) < concentration)
-	{
-		hp -= d;
-		textMsg->SetString(std::to_string(d));
-	}
-	else
-	{
-		hp -= 0;
-		textMsg->SetString("Miss");
-	}
+	hp -= d;
+	textMsg->SetString(std::to_string(d));
 	textMsg->SetActive(true);
 	timer = 0;
+}
+
+void Enemy::OnDie()
+{
+	if (!ondie)
+		return;
+
 	if (hp <= 0)
 	{
 		hp = 0;
-		//SetActive(false);
-		//SCENE_MGR.GetCurrentScene()->RemoveGo(this);
-		Create(type);
+		SetActive(false);
+		sceneGame->RemoveGo(this);
+		sceneGame->AddSpawnCount(1);
 	}
-
 }

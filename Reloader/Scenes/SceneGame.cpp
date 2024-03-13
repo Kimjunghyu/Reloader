@@ -6,6 +6,7 @@
 #include "Enemy.h"
 #include "Effect.h"
 #include "UiMsg.h"
+#include "EnemySpwaner.h"
 
 SceneGame::SceneGame(SceneIds id)
 	: Scene(id)
@@ -17,6 +18,13 @@ void SceneGame::Init()
 {
 	sf::Vector2f windowSize = (sf::Vector2f)FRAMEWORK.GetWindowSize();
 	sf::Vector2f centerPos = windowSize * 0.5f;
+
+	enemySpawners.push_back(new EnemySpwaner);
+	for (auto e : enemySpawners)
+	{
+		e->SetPosition({ 0.f,0.f });
+		AddGo(e,Scene::World);
+	}
 
 	gun = new Gun("gun");
 	gun->SetPosition({ centerPos.x + 50.f, centerPos.y + 100.f });
@@ -33,7 +41,7 @@ void SceneGame::Init()
 	AddGo(crosshair);
 
 	testBg = new SpriteGo("testBg");
-	testBg->SetTexture("graphics/stage3_bg_render_slow.png");
+	testBg->SetTexture("graphics/background2.png");
 	testBg->SetPosition({0.f,0.f});
 	testBg->sortLayer = -1;
 	testBg->SetOrigin(Origins::MC);
@@ -51,12 +59,8 @@ void SceneGame::Init()
 	AddGo(magazine, Scene::Ui);
 
 	hud = new UiHud("Hud");
-//	hud->SetOrigin(Origins::BL);
 	hud->SetPosition(centerPos);
 	AddGo(hud, Scene::Ui);
-
-	enemy = new Enemy("enemy");
-	AddGo(enemy);
 
 	effect = new Effect("effect");
 	AddGo(effect);
@@ -80,6 +84,8 @@ void SceneGame::Enter()
 {
 	Scene::Enter();
 	FRAMEWORK.GetWindow().setMouseCursorVisible(false);
+	enemySpawners[0]->SetActive(false);
+	spawnCount = 3;
 }
 
 void SceneGame::Exit()
@@ -91,113 +97,191 @@ void SceneGame::Exit()
 void SceneGame::Reset()
 {
 	conCent = 100.f;
+
+	auto& list = GetEnemyList();
+	for (auto Go : list)
+	{
+		if (!Go->GetActive())
+			continue;
+		Enemy* enemy = dynamic_cast<Enemy*>(Go);
+		if (enemy != nullptr)
+		{
+			RemoveGo(enemy);
+		}
+	}
 }
 
 void SceneGame::Update(float dt)
 {
+	FindGoAll("enemy", enemyList, Layers::World);
+
 	Scene::Update(dt);
 	crosshair->SetPosition(ScreenToWorld((sf::Vector2i)InputMgr::GetMousePos()));
-
 	sf::Vector2f worldViewCenter = worldView.getCenter();
+
+	player->SetMoveArm(false);
 
 	worldViewCenter = Utils::Lerp(worldViewCenter, { player->GetPosition().x,player->GetPosition().y - 75.f}, dt * 3.f);
 	worldView.setCenter(worldViewCenter);
 
 	bulletMagazine = gun->GetBulletCount();
 	uiMsg->GetBullet(bulletMagazine);
-
 	if (bulletMagazine <= 0 || !onMagazine)
 	{
 		magazine->SetTexture("graphics/emptymagazine.png");
 	}
-	else if(bulletMagazine > 0 || onMagazine)
+	else if (bulletMagazine > 0 || onMagazine)
 	{
 		magazine->SetTexture("graphics/fullmagazine.png");
 	}
+	if (enemyList.size() < 3)
+	{
+		spawnTimer += dt;
+		if (spawnTimer >= 5.f)
+		{
+			enemySpawners[0]->Spawn(spawnCount);
+			spawnCount = 0;
+			spawnTimer = 0.f;
+		}
+
+	}
 
 	fireTimer += dt;
-	if (Utils::Distance(enemy->GetPosition(), crosshair->GetPosition()) <= abs(80.f))
+	auto& list = GetEnemyList();
+	for (auto& Go : list)
 	{
-		crosshair->SetPosition({ enemy->GetPosition().x,enemy->GetPosition().y - (enemy->GetGlobalBounds().height*0.7f)});
-		crosshair->SetTexture("graphics/aimTarget1.png");
-		player->SetMoveArm(true);
-		player->SetPlayerArmAngle(crosshair->GetPosition());
-
-		if (InputMgr::GetMouseButton(sf::Mouse::Right))
+		if (!Go->GetActive())
+			continue;
+		Enemy* enemy = dynamic_cast<Enemy*>(Go);
+		if (enemy != nullptr)
 		{
-			crosshair->SetScale({ 1.5f,1.5f });
-			crosshair->SetPosition({ enemy->GetPosition().x,enemy->GetPosition().y - (enemy->GetGlobalBounds().height - 5.f) });
-			player->SetPlayerArmAngle(crosshair->GetPosition());
-			EnemyHit(100);
-			uiMsg->GetRmc(true);
-			uiMsg->GetKeyS(false);
-			if (InputMgr::GetMouseButtonDown(sf::Mouse::Left)&&bulletMagazine != 0 && fireTimer >= 1)
+
+			if (Utils::Distance(enemy->GetPosition(), crosshair->GetPosition()) <= abs(80.f))
 			{
-				conCent -= 10;
-				if (conCent <= 0)
+				onTarget = true;
+				crosshair->SetPosition({ enemy->GetPosition().x,enemy->GetPosition().y - (enemy->GetGlobalBounds().height * 0.7f) });
+				crosshair->SetTexture("graphics/aimTarget1.png");
+				player->SetMoveArm(true);
+				player->SetPlayerArmAngle(crosshair->GetPosition());
+
+				if (InputMgr::GetMouseButton(sf::Mouse::Right))
 				{
-					conCent = 0;
+					crosshair->SetScale({ 1.5f,1.5f });
+					crosshair->SetPosition({ enemy->GetPosition().x,enemy->GetPosition().y - (enemy->GetGlobalBounds().height - 5.f) });
+					player->SetPlayerArmAngle(crosshair->GetPosition());
+					if (InputMgr::GetMouseButtonDown(sf::Mouse::Left) && bulletMagazine > 0 && fireTimer >=0.5f && !errGun)
+					{
+						if (Utils::RandomRange(0, 100) < conCent)
+						{
+							enemy->Onhit(100);
+							fireTimer = 0;
+						}
+						else
+						{
+							enemy->Onhit(0);
+							fireTimer = 0;
+						}
+						conCent -= 10;
+						if (conCent <= 0)
+						{
+							conCent = 0;
+						}
+						uiMsg->UiConcent(conCent);
+						fireTimer = 0;
+						break;
+					}
+					uiMsg->GetRmc(true);
+					uiMsg->GetKeyS(false);
 				}
-				uiMsg->UiConcent(conCent);
-				enemy->SetConcent(conCent);
-				fireTimer = 0;
+				else if (InputMgr::GetKey(sf::Keyboard::S))
+				{
+					crosshair->SetPosition({ enemy->GetPosition().x,enemy->GetPosition().y - 5.f });
+					player->SetPlayerArmAngle(crosshair->GetPosition());
+					if (InputMgr::GetMouseButtonDown(sf::Mouse::Left) && bulletMagazine > 0 && fireTimer >= 0.5f && !errGun)
+					{
+						if (Utils::RandomRange(0, 100) < conCent)
+						{
+							enemy->Onhit(40);
+							fireTimer = 0;
+						}
+						else
+						{
+							enemy->Onhit(0);
+							fireTimer = 0;
+						}
+						break;
+					}
+					uiMsg->GetKeyS(true);
+					uiMsg->GetRmc(false);
+				}
+				else
+				{
+					if (InputMgr::GetMouseButtonDown(sf::Mouse::Left) && bulletMagazine > 0 && fireTimer >= 0.5f && !errGun)
+					{
+						if (Utils::RandomRange(0, 100) < conCent)
+						{
+							enemy->Onhit(50);
+							fireTimer = 0;
+						}
+						else
+						{
+							enemy->Onhit(0);
+							fireTimer = 0;
+						}
+						conCent += 10;
+						if (conCent >= 100)
+						{
+							conCent = 100;
+						}
+						uiMsg->UiConcent(conCent);
+						break;
+					}
+					uiMsg->GetRmc(false);
+					uiMsg->GetKeyS(false);
+				}
+				break;
+			}
+			else
+			{
+				uiMsg->GetRmc(false);
+				onTarget = false;
+				player->SetMoveArm(false);
+				crosshair->SetTexture("graphics/MouseTarget.png");
+			}
+			
+			if (Utils::Distance(player->GetPosition(), enemy->GetPosition()) < 250.f)
+			{
+				uiMsg->GetDisCover(true);
+			}
+			else
+			{
+				uiMsg->GetDisCover(false);
 			}
 		}
-		else if (InputMgr::GetKey(sf::Keyboard::S))
-		{
-			crosshair->SetPosition({ enemy->GetPosition().x,enemy->GetPosition().y - 5.f });
-			player->SetPlayerArmAngle(crosshair->GetPosition());
-			EnemyHit(40);
-			uiMsg->GetKeyS(true);
-			uiMsg->GetRmc(false);
-		}
-		else
-		{
-			if (InputMgr::GetMouseButtonDown(sf::Mouse::Left)&& bulletMagazine != 0 && fireTimer >= 0)
-			{
-				conCent += 10;
-				if (conCent >= 100)
-				{
-					conCent = 100;
-				}
-				uiMsg->UiConcent(conCent);
-				enemy->SetConcent(conCent);
-				fireTimer = 0;
-			}
-			EnemyHit(50);
-			uiMsg->GetRmc(false);
-			uiMsg->GetKeyS(false);
-		}
 	}
-	else
-	{
-		player->SetMoveArm(false);
-		crosshair->SetTexture("graphics/MouseTarget.png");
-	}
+	//if (player->GetPosition().y == 335.f)
+	//{
+	//	if (player->GetPosition().x >= 700.f)
+	//	{
+	//		player->SetPosition({ player->GetPosition().x - 75.f, -70.f });
+	//	}
+	//	else if (player->GetPosition().x <= -400.f)
+	//	{
+	//		player->SetPosition({ -800.f,-70.f });
+	//	}
+	//}
 
-	if (player->GetPosition().y == 335.f)
-	{
-		if (player->GetPosition().x >= 700.f)
-		{
-			player->SetPosition({ player->GetPosition().x - 75.f, -70.f });
-		}
-		else if (player->GetPosition().x <= -400.f)
-		{
-			player->SetPosition({ -800.f,-70.f });
-		}
-	}
-
-	if (player->GetPosition().y == -70.f)
-	{
-		if (player->GetPosition().x >= 700.f)
-		{
-			player->SetPosition({ player->GetPosition().x - 75.f, 335.f });
-		}
-		else if (player->GetPosition().x <= -850.f)
-		{
-			player->SetPosition({ -350.f, 335.f });
-		}
-	}
+	//if (player->GetPosition().y == -70.f)
+	//{
+	//	if (player->GetPosition().x >= 700.f)
+	//	{
+	//		player->SetPosition({ player->GetPosition().x - 75.f, 335.f });
+	//	}
+	//	else if (player->GetPosition().x <= -850.f)
+	//	{
+	//		player->SetPosition({ -350.f, 335.f });
+	//	}
+	//}
 	timer += dt;
 	if (timer >= 1)
 	{
@@ -213,14 +297,7 @@ void SceneGame::Update(float dt)
 		}
 		timer = 0;
 	}
-	if (Utils::Distance(player->GetPosition(), enemy->GetPosition()) < 250.f)
-	{
-		uiMsg->GetDisCover(true);
-	}
-	else
-	{
-		uiMsg->GetDisCover(false);
-	}
+
 }
 
 void SceneGame::FixedUpdate(float dt)
@@ -234,14 +311,6 @@ void SceneGame::Draw(sf::RenderWindow& window)
 	hud->Draw(window);
 }
 
-void SceneGame::EnemyHit(int d)
-{
-	if (gun->GetOnTarget() != false && InputMgr::GetMouseButtonDown(sf::Mouse::Left) && bulletMagazine > 0)
-	{
-		enemy->Onhit(d);
-	}
-}
-
 void SceneGame::AddConcent(int i)
 {
 	conCent += i;
@@ -250,6 +319,4 @@ void SceneGame::AddConcent(int i)
 		conCent = 100;
 	}
 	uiMsg->UiConcent(conCent);
-	enemy->SetConcent(conCent);
 }
-

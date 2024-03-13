@@ -99,6 +99,12 @@
     <ClCompile Include="Spawner.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="EnemySpwaner.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Bound.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\Defines.h">
@@ -192,6 +198,12 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Spawner.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemySpwaner.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Bound.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

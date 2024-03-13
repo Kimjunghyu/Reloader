@@ -59,6 +59,13 @@ int Utils::RandomRange(int min, int maxExclude)
 	return rand;
 }
 
+sf::Vector2f Utils::RandomOnUnitwindow()
+{
+	sf::Transform rotation;
+	rotation.rotate(RandomRange(0.f, 1920.f));
+	return rotation * sf::Vector2f(1.f, 0.f);
+}
+
 sf::Vector2f Utils::SetOrigin(sf::Transformable& obj, Origins originPreset, const sf::FloatRect& rect)
 {
 	// Rect Width, Height

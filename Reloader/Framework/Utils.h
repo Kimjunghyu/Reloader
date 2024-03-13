@@ -13,6 +13,8 @@ public:
 	static sf::Vector2f RandomOnUnitCircle();
 	static sf::Vector2f RandomInUnitCircle();
 	static int RandomRange(int min, int maxExclude);
+	static sf::Vector2f RandomOnUnitwindow();
+
 
 	// Origin
 	static sf::Vector2f SetOrigin(sf::Transformable& obj, Origins originPreset, const sf::FloatRect& rect);

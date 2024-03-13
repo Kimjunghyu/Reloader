@@ -36,7 +36,7 @@ void Player::Reset()
 
 	animator.Play("animations/playeridle.csv");
 	SetOrigin(Origins::BC);
-	SetPosition({ 0.f,335.f });
+	SetPosition({ 0.f,250.f });
 }
 
 void Player::Update(float dt)

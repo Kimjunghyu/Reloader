@@ -138,11 +138,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Animator.cpp" />
+    <ClCompile Include="Bound.cpp" />
     <ClCompile Include="Cartridge.cpp" />
     <ClCompile Include="DataTable\DataTableMgr.cpp" />
     <ClCompile Include="DataTable\DataTable.cpp" />
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemySpwaner.cpp" />
     <ClCompile Include="Framework\Framework.cpp" />
     <ClCompile Include="Framework\InputMgr.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
@@ -178,11 +180,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animator.h" />
+    <ClInclude Include="Bound.h" />
     <ClInclude Include="Cartridge.h" />
     <ClInclude Include="DataTable\DataTableMgr.h" />
     <ClInclude Include="DataTable\DataTable.h" />
     <ClInclude Include="Effect.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemySpwaner.h" />
     <ClInclude Include="Framework\rapidcsv.h" />
     <ClInclude Include="Framework\Framework.h" />
     <ClInclude Include="Framework\Defines.h" />
