@@ -7,6 +7,20 @@ Player::Player(const std::string& name)
 {
 }
 
+void Player::TestInstance()
+{
+	if (playerSit)
+	{
+		animator.Stop();
+		playerMove = false;
+	}
+	else if (!playerSit)
+	{
+		animator.Play("animations/playerrun.csv");
+		animator.Resume();
+	}
+}
+
 void Player::Init()
 {
 	SpriteGo::Init();
@@ -17,12 +31,6 @@ void Player::Init()
 	playerArm->SetTexture("graphics/arm1.png");
 	playerArm->SetOrigin(Origins::ML);
 	playerArm->SetPosition({ 0.f,0.f });
-
-	playerGun = new SpriteGo("Gun");
-	playerGun->SetTexture("graphics/mingunBody.png");
-	playerGun->SetOrigin(Origins::ML);
-	playerGun->SetPosition({ 0.f,0.f });
-
 }
 
 void Player::Release()
@@ -37,6 +45,9 @@ void Player::Reset()
 	animator.Play("animations/playeridle.csv");
 	SetOrigin(Origins::BC);
 	SetPosition({ 0.f,250.f });
+	std::function<void()> funcInstance = std::bind(&Player::TestInstance, this);
+	animator.AddEvent("animations/playersit.csv", 4, funcInstance);
+
 }
 
 void Player::Update(float dt)
@@ -48,8 +59,16 @@ void Player::Update(float dt)
 	sf::Vector2i mousePos = (sf::Vector2i)InputMgr::GetMousePos();
 	sf::Vector2f mouseWorldPos = SCENE_MGR.GetCurrentScene()->ScreenToWorld(mousePos);
 
+	if (playerMove)
+	{
+		direction.x = InputMgr::GetAxis(Axis::Horizontal);
+	}
+	else if (!playerMove)
+	{
+		direction.x = 0.f;
+	}
 
-	direction.x = InputMgr::GetAxis(Axis::Horizontal);
+
 	if (animator.GetCurrentClipId() == "animations/playeridle.csv")
 	{
 		if (direction.x != 0.f)
@@ -64,30 +83,50 @@ void Player::Update(float dt)
 			animator.Play("animations/playeridle.csv");
 		}
 	}
+
 	if (Utils::Magnitude(direction) > 1.f)
 	{
 		Utils::Normalize(direction);
 	}
-
 	sf::Vector2f pos = position + direction * speed * dt;
 	SetPosition(pos);
 
+	if (InputMgr::GetKeyDown(sf::Keyboard::C))
+	{
+		animator.Play("animations/playersit.csv");
+
+		if (InputMgr::GetKey(sf::Keyboard::C))
+		{
+			playerSit = true;
+
+		}
+	}
+	else if (InputMgr::GetKeyUp(sf::Keyboard::C))
+	{
+		playerSit = false;
+		animator.Resume();
+		playerMove = true;
+
+	}
+
+	if (!playerSit)
+	{
+		armPos.y = (sprite.getGlobalBounds().top + 30.f);
+	}
+	else
+	{
+		armPos.y = (sprite.getGlobalBounds().top + 35.f);
+	}
 	armPos.x = (sprite.getPosition().x);
-	armPos.y = (sprite.getGlobalBounds().top+30.f);
 
 	look = mouseWorldPos - position;
-	sf::Vector2f gunDirection = look;
 	Utils::Normalize(look);
 	if (!moveArm)
 	{
 		playerArm->SetRotation(Utils::Angle(look));
 	}
-
 	playerArm->SetPosition(armPos);
 
-	//gunPos.x = playerArm->GetGlobalBounds().width * gunDirection.x * 0.5;
-	//gunPos.y = playerArm->GetGlobalBounds().height * gunDirection.y * 0.5;
-	//playerGun->SetPosition(gunPos);
 
 	if (look.x < 0)
 	{
@@ -97,6 +136,7 @@ void Player::Update(float dt)
 	{
 		SetFlipX(false);
 	}
+
 	if (mouseWorldPos.x < GetPosition().x)
 	{
 		playerArm->SetFlipY(true);
@@ -105,14 +145,12 @@ void Player::Update(float dt)
 	{
 		playerArm->SetFlipY(false);
 	}
-
 }
 
 void Player::Draw(sf::RenderWindow& window)
 {
 	SpriteGo::Draw(window);
 	playerArm->Draw(window);
-	playerGun->Draw(window);
 }
 
 void Player::SetPlayerArmAngle(sf::Vector2f v)

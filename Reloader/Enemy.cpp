@@ -12,13 +12,13 @@ Enemy* Enemy::Create(Types enemyTypes)
 	switch (enemyTypes)
 	{
 	case Enemy::Types::Distance:
-		enemy->textureId = "graphics/test.png";
+		enemy->textureId = "graphics/gunnerat.png";
 		enemy->hp = 100;
 		enemy->speed = 100.f;
 		enemy->range = 200.f;
 		break;
 	case Enemy::Types::Melee:
-		enemy->textureId = "graphics/test2.png";
+		enemy->textureId = "graphics/at.png";
 		enemy->hp = 100;
 		enemy->speed = 110.f;
 		enemy->range = 10.f;
@@ -122,7 +122,6 @@ void Enemy::OnDie()
 {
 	if (!ondie)
 		return;
-
 	if (hp <= 0)
 	{
 		hp = 0;

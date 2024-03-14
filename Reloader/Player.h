@@ -21,6 +21,7 @@ protected:
 
 	SceneGame* sceneGame = nullptr;
 	bool moveArm = false;
+	bool playerMove = true;
 public:
 	Player(const std::string& name = "");
 	~Player() override = default;
@@ -30,6 +31,8 @@ public:
 		return playerArm;
 	}
 
+	void TestInstance();
+
 	void Init() override;
 	void Release() override;
 	void Reset() override;
@@ -37,5 +40,6 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 	bool SetMoveArm(bool c) { return moveArm = c; }
 	void SetPlayerArmAngle(sf::Vector2f v);
+	bool playerSit = false;
 };
 

@@ -259,29 +259,6 @@ void SceneGame::Update(float dt)
 			}
 		}
 	}
-	//if (player->GetPosition().y == 335.f)
-	//{
-	//	if (player->GetPosition().x >= 700.f)
-	//	{
-	//		player->SetPosition({ player->GetPosition().x - 75.f, -70.f });
-	//	}
-	//	else if (player->GetPosition().x <= -400.f)
-	//	{
-	//		player->SetPosition({ -800.f,-70.f });
-	//	}
-	//}
-
-	//if (player->GetPosition().y == -70.f)
-	//{
-	//	if (player->GetPosition().x >= 700.f)
-	//	{
-	//		player->SetPosition({ player->GetPosition().x - 75.f, 335.f });
-	//	}
-	//	else if (player->GetPosition().x <= -850.f)
-	//	{
-	//		player->SetPosition({ -350.f, 335.f });
-	//	}
-	//}
 	timer += dt;
 	if (timer >= 1)
 	{

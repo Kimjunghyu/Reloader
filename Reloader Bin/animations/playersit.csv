@@ -1,0 +1,9 @@
+ID,FPS,"LOOPTYPE(0:SINGLE, 1:LOOP, 2:PING PONG)",,
+playersit,20,0,,
+,,,,
+TEXTURE ID,LEFT,Top,WIDTH,HEIGHT
+graphics/q.png,0,0,31,84
+graphics/q.png,32,0,31,84
+graphics/q.png,0,84,31,84
+graphics/q.png,32,84,31,84
+graphics/q.png,0,168,31,84
