@@ -138,13 +138,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Animator.cpp" />
-    <ClCompile Include="Bound.cpp" />
     <ClCompile Include="Cartridge.cpp" />
     <ClCompile Include="DataTable\DataTableMgr.cpp" />
     <ClCompile Include="DataTable\DataTable.cpp" />
-    <ClCompile Include="Effect.cpp" />
-    <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="EnemySpwaner.cpp" />
+    <ClCompile Include="GameObjects\Effect.cpp" />
+    <ClCompile Include="GameObjects\Enemy.cpp" />
+    <ClCompile Include="GameObjects\EnemySpwaner.cpp" />
     <ClCompile Include="Framework\Framework.cpp" />
     <ClCompile Include="Framework\InputMgr.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
@@ -153,14 +152,14 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="GameObjects\GameObject.cpp" />
-    <ClCompile Include="Gun.cpp" />
+    <ClCompile Include="GameObjects\Gun.cpp" />
     <ClCompile Include="main.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="GameObjects\Player.cpp" />
     <ClCompile Include="Scenes\SceneGame.cpp" />
     <ClCompile Include="Scenes\Scene.cpp" />
     <ClCompile Include="Framework\SceneMgr.cpp" />
@@ -175,18 +174,17 @@
     <ClCompile Include="Scenes\TitleScene.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="Spawner.cpp" />
-    <ClCompile Include="UiMsg.cpp" />
+    <ClCompile Include="GameObjects\Spawner.cpp" />
+    <ClCompile Include="GameObjects\UiMsg.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animator.h" />
-    <ClInclude Include="Bound.h" />
     <ClInclude Include="Cartridge.h" />
     <ClInclude Include="DataTable\DataTableMgr.h" />
     <ClInclude Include="DataTable\DataTable.h" />
-    <ClInclude Include="Effect.h" />
-    <ClInclude Include="Enemy.h" />
-    <ClInclude Include="EnemySpwaner.h" />
+    <ClInclude Include="GameObjects\Effect.h" />
+    <ClInclude Include="GameObjects\Enemy.h" />
+    <ClInclude Include="GameObjects\EnemySpwaner.h" />
     <ClInclude Include="Framework\rapidcsv.h" />
     <ClInclude Include="Framework\Framework.h" />
     <ClInclude Include="Framework\Defines.h" />
@@ -195,9 +193,9 @@
     <ClInclude Include="Framework\Singleton.h" />
     <ClInclude Include="Framework\Utils.h" />
     <ClInclude Include="GameObjects\GameObject.h" />
-    <ClInclude Include="Gun.h" />
+    <ClInclude Include="GameObjects\Gun.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="Player.h" />
+    <ClInclude Include="GameObjects\Player.h" />
     <ClInclude Include="Scenes\SceneGame.h" />
     <ClInclude Include="Scenes\Scene.h" />
     <ClInclude Include="Framework\SceneMgr.h" />
@@ -212,8 +210,8 @@
     <ClInclude Include="Scenes\TitleScene.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="Spawner.h" />
-    <ClInclude Include="UiMsg.h" />
+    <ClInclude Include="GameObjects\Spawner.h" />
+    <ClInclude Include="GameObjects\UiMsg.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

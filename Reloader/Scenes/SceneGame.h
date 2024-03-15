@@ -44,6 +44,8 @@ protected:
 	bool onTarget = false;
 	bool onDie = false;
 	bool errGun = false;
+	bool playerSit = false;
+	bool enemyDie = false;
 
 	float spawnTimer = 3.f;
 public:
@@ -74,5 +76,7 @@ public:
 	void AddSpawnCount(int i) { spawnCount += i; }
 	void SetErrGun(bool b) { errGun = b; }
 	void SetFiring(bool b) { isFiring = b; }
+	void PlayerSit(bool b) { playerSit = b; }
+	void EnemyDie(bool b) { enemyDie = b; }
 };
 

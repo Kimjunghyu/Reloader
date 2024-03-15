@@ -13,8 +13,6 @@ SceneDev1::~SceneDev1()
 
 void SceneDev1::Init()
 {
-	AddGo(new Gun);
-	//AddGo(new AniTest2);
 	Scene::Init();
 }
 

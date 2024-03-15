@@ -5,7 +5,7 @@ class AniTest2;
 class SceneDev1 : public Scene
 {
 protected:
-	AniTest2* anitest;
+
 public:
 	SceneDev1(SceneIds id);
 	virtual ~SceneDev1();

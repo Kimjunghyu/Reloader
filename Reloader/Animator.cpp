@@ -126,7 +126,6 @@ bool AnimationClip::loadFromFile(const std::string& filePath)
 {
 	rapidcsv::Document doc(filePath);
 
-	//id = doc.GetCell<std::string>(0, 0);
 	id = filePath;
 	fps = doc.GetCell<int>(1, 0);
 	loopType = (AnimationLoopTypes)doc.GetCell<int>(2, 0);

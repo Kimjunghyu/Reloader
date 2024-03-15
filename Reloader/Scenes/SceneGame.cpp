@@ -137,7 +137,7 @@ void SceneGame::Update(float dt)
 	if (enemyList.size() < 3)
 	{
 		spawnTimer += dt;
-		if (spawnTimer >= 5.f)
+		if (spawnTimer >= 8.f)
 		{
 			enemySpawners[0]->Spawn(spawnCount);
 			spawnCount = 0;
@@ -240,7 +240,6 @@ void SceneGame::Update(float dt)
 					uiMsg->GetKeyS(false);
 				}
 				break;
-			
 			}
 			else
 			{
@@ -249,17 +248,39 @@ void SceneGame::Update(float dt)
 				player->SetMoveArm(false);
 				crosshair->SetTexture("graphics/MouseTarget.png");
 			}
-			
-			if (Utils::Distance(player->GetPosition(), enemy->GetPosition()) < 250.f)
+		}
+	}
+
+	for (auto& Go : list)
+	{
+		if (!Go->GetActive())
+			continue;
+		Enemy* enemy = dynamic_cast<Enemy*>(Go);
+		if (enemy != nullptr)
+		{
+			if (!enemyDie)
 			{
-				uiMsg->GetDisCover(true);
-			}
-			else
-			{
-				uiMsg->GetDisCover(false);
+				if (Utils::Distance(player->GetPosition(), enemy->GetPosition()) < 250.f)
+				{
+					uiMsg->GetDisCover(true);
+				}
+				else
+				{
+					uiMsg->GetDisCover(false);
+				}
+				if (playerSit)
+				{
+					enemy->SetMissFire(30);
+				}
+				else
+				{
+					enemy->SetMissFire(50);
+				}
+				break;
 			}
 		}
 	}
+	
 	timer += dt;
 	if (timer >= 1)
 	{
@@ -275,7 +296,6 @@ void SceneGame::Update(float dt)
 		}
 		timer = 0;
 	}
-
 }
 
 void SceneGame::FixedUpdate(float dt)

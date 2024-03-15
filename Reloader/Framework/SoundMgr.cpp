@@ -21,8 +21,6 @@ void SoundMgr::Init(int totalChannels)
 
 void SoundMgr::Release()
 {
-	//StopAllSfx();
-	//StopBgm();
 
 	for (auto sound : waiting)
 	{

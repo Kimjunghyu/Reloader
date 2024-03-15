@@ -78,31 +78,28 @@
     <ClCompile Include="Animator.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Gun.cpp">
+    <ClCompile Include="GameObjects\Gun.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
+    <ClCompile Include="GameObjects\Player.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Cartridge.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
+    <ClCompile Include="GameObjects\Enemy.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Effect.cpp">
+    <ClCompile Include="GameObjects\Effect.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="UiMsg.cpp">
+    <ClCompile Include="GameObjects\UiMsg.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Spawner.cpp">
+    <ClCompile Include="GameObjects\Spawner.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="EnemySpwaner.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Bound.cpp">
+    <ClCompile Include="GameObjects\EnemySpwaner.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -179,31 +176,28 @@
     <ClInclude Include="Animator.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Gun.h">
+    <ClInclude Include="GameObjects\Gun.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
+    <ClInclude Include="GameObjects\Player.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Cartridge.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
+    <ClInclude Include="GameObjects\Enemy.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Effect.h">
+    <ClInclude Include="GameObjects\Effect.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="UiMsg.h">
+    <ClInclude Include="GameObjects\UiMsg.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Spawner.h">
+    <ClInclude Include="GameObjects\Spawner.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="EnemySpwaner.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Bound.h">
+    <ClInclude Include="GameObjects\EnemySpwaner.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

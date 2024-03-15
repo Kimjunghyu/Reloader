@@ -27,9 +27,7 @@ public:
 		bool success = res->loadFromFile(filePath);
 		if (success)
 		{
-			//resources[id] = res;
 			resources.insert({ filePath, res });
-			//resources.insert(std::unordered_map<std::string, T*>::make_pair(id, res))
 		}
 		return success;
 	}
