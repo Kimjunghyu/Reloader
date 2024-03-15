@@ -155,10 +155,10 @@ void SceneGame::Update(float dt)
 		Enemy* enemy = dynamic_cast<Enemy*>(Go);
 		if (enemy != nullptr)
 		{
-
-			if (Utils::Distance(enemy->GetPosition(), crosshair->GetPosition()) <= abs(80.f))
+			if (!enemy->GetEnemyDie() && Utils::Distance(enemy->GetPosition(), crosshair->GetPosition()) <= abs(80.f))
 			{
 				onTarget = true;
+
 				crosshair->SetPosition({ enemy->GetPosition().x,enemy->GetPosition().y - (enemy->GetGlobalBounds().height * 0.7f) });
 				crosshair->SetTexture("graphics/aimTarget1.png");
 				player->SetMoveArm(true);
@@ -169,7 +169,7 @@ void SceneGame::Update(float dt)
 					crosshair->SetScale({ 1.5f,1.5f });
 					crosshair->SetPosition({ enemy->GetPosition().x,enemy->GetPosition().y - (enemy->GetGlobalBounds().height - 5.f) });
 					player->SetPlayerArmAngle(crosshair->GetPosition());
-					if (InputMgr::GetMouseButtonDown(sf::Mouse::Left) && bulletMagazine > 0 && fireTimer >=0.5f && !errGun)
+					if (InputMgr::GetMouseButtonDown(sf::Mouse::Left) && bulletMagazine > 0 && fireTimer >= 0.5f && !errGun)
 					{
 						if (Utils::RandomRange(0, 100) < conCent)
 						{
@@ -240,6 +240,7 @@ void SceneGame::Update(float dt)
 					uiMsg->GetKeyS(false);
 				}
 				break;
+			
 			}
 			else
 			{

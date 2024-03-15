@@ -3,6 +3,7 @@
 #include "Animator.h"
 
 class SceneGame;
+class UiMsg;
 
 class Player : public SpriteGo
 {
@@ -16,12 +17,20 @@ protected:
 	sf::Vector2f gunPos;
 	SpriteGo* playerArm;
 	SpriteGo* playerGun;
+	UiMsg* uiMsg;
 
+	int hp = 100;
+	int maxHp = 100;
+	int testHp = 1000;
+
+	float timer = 0.f;
 	float maxConcent = 100.f;
 
 	SceneGame* sceneGame = nullptr;
 	bool moveArm = false;
 	bool playerMove = true;
+	bool isAlive = true;
+	bool noDamage = false;
 public:
 	Player(const std::string& name = "");
 	~Player() override = default;
@@ -41,5 +50,8 @@ public:
 	bool SetMoveArm(bool c) { return moveArm = c; }
 	void SetPlayerArmAngle(sf::Vector2f v);
 	bool playerSit = false;
+
+	void Onhit(int i);
+	void OnDie();
 };
 

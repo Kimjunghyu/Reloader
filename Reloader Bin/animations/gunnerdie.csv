@@ -1,0 +1,12 @@
+ID,FPS,"LOOPTYPE(0:SINGLE, 1:LOOP, 2:PING PONG)",,
+gunnerdie,10,0,,
+,,,,
+TEXTURE ID,LEFT,Top,WIDTH,HEIGHT
+graphics/gunnerdie.png,0,0,84,85
+graphics/gunnerdie.png,84,0,84,85
+graphics/gunnerdie.png,168,0,84,85
+graphics/gunnerdie.png,0,85,84,85
+graphics/gunnerdie.png,84,85,84,85
+graphics/gunnerdie.png,168,85,84,85
+graphics/gunnerdie.png,0,170,84,85
+graphics/gunnerdie.png,84,170,84,85

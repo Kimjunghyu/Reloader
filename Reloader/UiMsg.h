@@ -22,6 +22,7 @@ protected:
 	bool DisCover = false;
 	bool emptyGun = false;
 	bool onMagazine = true;
+	bool playerSit = false;
 	int concent = 100;
 	int hp = 100;
 public:
@@ -52,5 +53,7 @@ public:
 	void GetHandBullet(bool b) { handBullet = b; }
 	void GetEmptyGun(bool b) { emptyGun = b; }
 	void GetMagazine(bool b) { onMagazine = b; }
+	void GetHp(int i) { hp = i; }
+	void PlayerSit(bool b) { playerSit = b; }
 };
 

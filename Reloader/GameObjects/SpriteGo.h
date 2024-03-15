@@ -5,6 +5,7 @@ class SpriteGo : public GameObject
 protected:
 	sf::Sprite sprite;
 	std::string textureId;
+	std::string clipId;
 	sf::RectangleShape shape;
 	sf::Vector2f hitBox;
 	bool test = false;

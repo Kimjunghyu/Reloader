@@ -61,7 +61,7 @@ void Gun::Reset()
 	animator.AddEvent("animations/Gun.csv", 5, funcInstance);
 
 	animator.Play("animations/Gunreturn.csv");
-	bulletCount = 6;
+	bulletCount = 15;
 }
 
 void Gun::Update(float dt)
@@ -200,7 +200,7 @@ void Gun::Update(float dt)
 	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::Tab)) //test
 	{
-		bulletCount = 6;
+		bulletCount = 15;
 	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::F1))
 	{

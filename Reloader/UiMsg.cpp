@@ -160,4 +160,12 @@ void UiMsg::uiUpdate()
 	{
 		discovered.SetFillColor(sf::Color::Yellow);
 	}
+	if (playerSit)
+	{
+		uiMsg[10].SetFillColor(sf::Color::Cyan);
+	}
+	else if (!playerSit)
+	{
+		uiMsg[10].SetFillColor(sf::Color::White);
+	}
 }

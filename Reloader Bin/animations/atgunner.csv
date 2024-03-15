@@ -1,0 +1,8 @@
+ID,FPS,"LOOPTYPE(0:SINGLE, 1:LOOP, 2:PING PONG)",,
+atgunner,20,2,,
+,,,,
+TEXTURE ID,LEFT,Top,WIDTH,HEIGHT
+graphics/gunnerattak.png,0,0,33,83
+graphics/gunnerattak.png,33,0,33,83
+graphics/gunnerattak.png,66,0,33,83
+graphics/gunnerattak.png,99,0,33,83

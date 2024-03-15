@@ -1,0 +1,12 @@
+ID,FPS,"LOOPTYPE(0:SINGLE, 1:LOOP, 2:PING PONG)",,,,,
+meleedie,10,0,,,,,
+,,,,,,,
+TEXTURE ID,LEFT,Top,WIDTH,HEIGHT,,,
+graphics/atdie.png,0,0,84,85,,,
+graphics/atdie.png,84,0,84,85,,,
+graphics/atdie.png,168,0,84,85,,,
+graphics/atdie.png,0,85,84,85,,,
+graphics/atdie.png,84,85,84,85,,,
+graphics/atdie.png,168,85,84,85,,,
+graphics/atdie.png,0,170,84,85,,,85
+graphics/atdie.png,84,170,84,85,,,

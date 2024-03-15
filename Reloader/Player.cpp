@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Player.h"
 #include "SceneGame.h"
+#include "UiMsg.h"
 
 Player::Player(const std::string& name)
 	:SpriteGo(name)
@@ -18,6 +19,14 @@ void Player::TestInstance()
 	{
 		animator.Play("animations/playerrun.csv");
 		animator.Resume();
+	}
+	if (noDamage)
+	{
+		noDamage = false;
+	}
+	else
+	{
+		return;
 	}
 }
 
@@ -41,6 +50,7 @@ void Player::Release()
 void Player::Reset()
 {
 	sceneGame = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+	uiMsg = dynamic_cast<UiMsg*>(SCENE_MGR.GetCurrentScene()->FindGo("uiMsg"));
 
 	animator.Play("animations/playeridle.csv");
 	SetOrigin(Origins::BC);
@@ -48,6 +58,9 @@ void Player::Reset()
 	std::function<void()> funcInstance = std::bind(&Player::TestInstance, this);
 	animator.AddEvent("animations/playersit.csv", 4, funcInstance);
 
+	std::function<void()> playerhit = std::bind(&Player::TestInstance, this);
+	animator.AddEvent("animations/playerhit.csv", 7, playerhit);
+	hp = testHp;
 }
 
 void Player::Update(float dt)
@@ -55,7 +68,7 @@ void Player::Update(float dt)
 	SpriteGo::Update(dt);
 
 	animator.Update(dt);
-
+	uiMsg->GetHp(hp);
 	sf::Vector2i mousePos = (sf::Vector2i)InputMgr::GetMousePos();
 	sf::Vector2f mouseWorldPos = SCENE_MGR.GetCurrentScene()->ScreenToWorld(mousePos);
 
@@ -98,6 +111,7 @@ void Player::Update(float dt)
 		if (InputMgr::GetKey(sf::Keyboard::C))
 		{
 			playerSit = true;
+			uiMsg->PlayerSit(true);
 
 		}
 	}
@@ -106,7 +120,7 @@ void Player::Update(float dt)
 		playerSit = false;
 		animator.Resume();
 		playerMove = true;
-
+		uiMsg->PlayerSit(false);
 	}
 
 	if (!playerSit)
@@ -145,6 +159,30 @@ void Player::Update(float dt)
 	{
 		playerArm->SetFlipY(false);
 	}
+	timer += dt;
+
+	if (timer >= 1.5f)
+	{
+		hp += 10;
+		if (hp >= testHp)
+		{
+			hp = testHp;
+		}
+		timer = 0;
+	}
+	if (noDamage)
+	{
+		timer = 0;
+	}
+
+	if (hp <= 0)
+	{
+		OnDie();
+	}
+	else if (hp > 0)
+	{
+		isAlive = true;
+	}
 }
 
 void Player::Draw(sf::RenderWindow& window)
@@ -157,4 +195,34 @@ void Player::SetPlayerArmAngle(sf::Vector2f v)
 {
 	v -= playerArm->GetPosition();
 	playerArm->SetRotation(Utils::Angle(v));
+}
+
+void Player::Onhit(int i)
+{
+	if (!isAlive)
+		return;
+
+	if (!noDamage)
+	{
+		animator.PlayQueue("animations/playerhit.csv");
+		hp -= i;
+		noDamage = true;
+	}
+	else if (noDamage)
+	{
+		return;
+	}
+}
+
+void Player::OnDie()
+{
+	isAlive = false;
+	hp = 0;
+
+	SetActive(false);
+	if (InputMgr::GetKeyDown(sf::Keyboard::Num0))
+	{
+		hp = testHp;
+		SetActive(true);
+	}
 }

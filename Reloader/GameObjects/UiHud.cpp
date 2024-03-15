@@ -190,7 +190,7 @@ void UiHud::Init()
 		frame[i].SetScale({ 2.f,2.f });
 		frame[i].SetOrigin(Origins::TL);
 		frame[i].SetPosition({ -300.f + i * 200.f, 800.f });
-		frameBullet[i] = 6;
+		frameBullet[i] = 15;
 	}
 
 	handFrame.Init();

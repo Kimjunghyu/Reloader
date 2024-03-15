@@ -1,0 +1,12 @@
+ID,FPS,"LOOPTYPE(0:SINGLE, 1:LOOP, 2:PING PONG)",,
+atidle,8,2,,
+,,,,
+TEXTURE ID,LEFT,Top,WIDTH,HEIGHT
+graphics/atidle.png,0,0,33,84
+graphics/atidle.png,33,0,33,84
+graphics/atidle.png,66,0,33,84
+graphics/atidle.png,99,0,33,84
+graphics/atidle.png,132,0,33,84
+graphics/atidle.png,165,0,33,84
+graphics/atidle.png,198,0,33,84
+graphics/atidle.png,231,0,33,84

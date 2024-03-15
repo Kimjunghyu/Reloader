@@ -1,0 +1,12 @@
+ID,FPS,"LOOPTYPE(0:SINGLE, 1:LOOP, 2:PING PONG)",,
+gunneridle,8,2,,
+,,,,
+TEXTURE ID,LEFT,Top,WIDTH,HEIGHT
+graphics/gunneridle.png,0,0,33,83
+graphics/gunneridle.png,33,0,33,83
+graphics/gunneridle.png,66,0,33,83
+graphics/gunneridle.png,99,0,33,83
+graphics/gunneridle.png,132,0,33,83
+graphics/gunneridle.png,165,0,33,83
+graphics/gunneridle.png,198,0,33,83
+graphics/gunneridle.png,231,0,33,83

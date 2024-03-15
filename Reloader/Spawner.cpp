@@ -24,7 +24,6 @@ void Spawner::Spawn()
 		newPos = left;
 		newPos.x -= 50.f;
 	}
-
 	GameObject* newGo = Create();
 	newGo->Init();
 	newGo->Reset();
