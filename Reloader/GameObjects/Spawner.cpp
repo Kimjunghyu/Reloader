@@ -17,12 +17,12 @@ void Spawner::Spawn()
 	if (Utils::RandomRange(0, 100) > 50)
 	{
 		newPos = right;
-		newPos.x += 50.f;
+		newPos.x += 300.f;
 	}
 	else
 	{
 		newPos = left;
-		newPos.x -= 50.f;
+		newPos.x -= 100.f;
 	}
 	GameObject* newGo = Create();
 	newGo->Init();

@@ -105,21 +105,52 @@ void Enemy::Update(float dt)
 	SpriteGo::Update(dt);
 
 	atanimator.Update(dt);
-
-	direction = player->GetPosition() - position;
-	Utils::Normalize(direction);
-	if (!ondie)
+	if (Utils::Distance(player->GetPosition(), GetPosition()) <= 250.f || hp < 100)
 	{
-		if (player->GetPosition().x >= GetPosition().x)
+		disCover = true;
+		uiMsg->GetDisCover(true);
+		enemyMove = true;
+	}
+	else
+	{
+		disCover = false;
+		uiMsg->GetDisCover(false);
+		enemyMove = false;
+	}
+
+	if (disCover)
+	{
+		direction = player->GetPosition() - position;
+		Utils::Normalize(direction);
+		if (!ondie)
 		{
-			SetFlipX(false);
+			if (player->GetPosition().x >= GetPosition().x)
+			{
+				SetFlipX(false);
+			}
+			else
+			{
+				SetFlipX(true);
+			}
 		}
-		else
+	}
+	else if (!disCover)
+	{
+		moveTimer += dt;
+		if (moveTimer >= 2.f)
+		{
+			direction.x *= -1;
+			moveTimer = 0;
+		}
+		if (direction.x < 0)
 		{
 			SetFlipX(true);
 		}
+		else if (direction.x > 0)
+		{
+			SetFlipX(false);
+		}
 	}
-	
 	enemyPos = position + direction * speed * dt;
 	enemyPos.y = player->GetPosition().y;
 	SetPosition(enemyPos);
@@ -191,9 +222,17 @@ void Enemy::Update(float dt)
 	}
 	else if (hp <= 0)
 	{
+		if (!addScore)
+		{
+			sceneGame->AddScore(10);
+			sceneGame->AddHiScore(10);
+			addScore = true;
+		}
 		ondie = true;
 		sceneGame->EnemyDie(true);
 		OnDie(dt);
+
+		return;
 	}
 
 }
@@ -257,7 +296,7 @@ void Enemy::PlayerAttack()
 			bullet = 0;
 			player->Onhit(0);
 		}
-		if (Utils::RandomRange(0, 100) < missFire)
+		if (Utils::RandomRange(0, 100) < 50)
 		{
 			player->Onhit(30);
 			bullet -= 1;
@@ -288,16 +327,24 @@ void Enemy::Draw(sf::RenderWindow& window)
 	textMsg->Draw(window);
 	if (this->type == Types::Distance)
 	{
-		if (ondie && dropAmmo && Utils::Distance(player->GetPosition(),GetPosition()) < 50.f)
+		if (ondie && dropAmmo && Utils::Distance(player->GetPosition(), GetPosition()) < 50.f)
 		{
 			ammo->Draw(window);
 		}
 	}
-
 }
 
 void Enemy::Onhit(int d)
 {
+	if (this->type == Types::Distance)
+	{
+		SOUND_MGR.PlaySfx("sound/meleeHit.wav");
+	}
+	else if (this->type == Types::Melee)
+	{
+		SOUND_MGR.PlaySfx("sound/meleeHit.wav");
+	}
+
 	hp -= d;
 	textMsg->SetString(std::to_string(d));
 	textMsg->SetActive(true);
@@ -308,15 +355,17 @@ void Enemy::OnDie(float dt)
 {
 	if (!ondie)
 		return;
+
 	if (hp <= 0)
 	{
 		hp = 0;
 		speed = 0;
+
 		if (this->type == Types::Distance)
 		{
 			atanimator.PlayQueue("animations/gunnerdie.csv");
 			removeTimer += dt;
-			if (removeTimer >= 6 || removeEnemy)
+			if (removeTimer >= 4 || removeEnemy)
 			{
 				SetActive(false);
 				sceneGame->RemoveGo(this);
@@ -334,7 +383,7 @@ void Enemy::OnDie(float dt)
 		{
 			atanimator.PlayQueue("animations/meleedie.csv");
 			removeTimer += dt;
-			if (removeTimer >= 4)
+			if (removeTimer >= 3)
 			{
 				SetActive(false);
 				sceneGame->RemoveGo(this);

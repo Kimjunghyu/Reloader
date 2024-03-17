@@ -30,28 +30,32 @@ protected:
 	Types type;
 	EnemySpwaner* enemySpawner;
 	SceneGame* sceneGame;
+	
 	sf::RenderWindow window;
 
-	sf::Vector2f direction = { 0.f,0.f };
+	sf::Vector2f direction = { 1.f,0.f };
 	sf::Vector2f enemyPos = { 0.f,0.f };
 
 	Player* player = nullptr;
 	int hp = 100;
 	float speed = 100.f;
 	float range = 0.f;
-	int bullet = 15;
+	int bullet = 6;
 
 	TextGo* textMsg;
 	float timer;
 	float attackTimer;
 	float interval;
 	float removeTimer;
+	float moveTimer;
 	int missFire;
 	int concentration;
 	bool ondie = false;
 	bool enemyMove = true;
 	bool dropAmmo = false;
 	bool removeEnemy = false;
+	bool disCover = false;
+	bool addScore = false;
 public:
 	Enemy(const std::string& name = "");
 	~Enemy() override = default;
@@ -59,6 +63,11 @@ public:
 	void Init() override;
 	void Reset() override;
 	void Update(float dt) override;
+
+	SpriteGo* GetAmmo()
+	{
+		return ammo;
+	}
 
 	void TestInstance();
 	void PlayerAttack();
@@ -71,7 +80,10 @@ public:
 	void EnemyHpSet(int h) { hp = h; }
 	void SetConcent(int i) { concentration = i; }
 	bool GetEnemyDie() { return ondie; }
-
 	void SetMissFire(int i) { missFire = i; }
+
+	int GetEnemyBullet() { return bullet; }
+
+	Types GetType()const { return type; }
 };
 

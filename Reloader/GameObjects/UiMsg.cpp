@@ -36,6 +36,14 @@ void UiMsg::Init()
 	uiHp.Set(font, "", 50, sf::Color::White);
 	uiHp.SetOrigin(Origins::TL);
 	uiHp.SetPosition({ -350.f,-200.f });
+
+	uiScore.Set(font, "", 50, sf::Color::White);
+	uiScore.SetOrigin(Origins::TL);
+	uiScore.SetPosition({ 300,-200.f });
+
+	uiHiScore.Set(font, "", 50, sf::Color::White);
+	uiHiScore.SetOrigin(Origins::TL);
+	uiHiScore.SetPosition({ 600,-200 });
 }
 
 void UiMsg::Reset()
@@ -48,7 +56,8 @@ void UiMsg::Reset()
 		uiMsg[i].Reset();
 	}
 	concent = 100;
-	hp = 100;
+
+	score = 0;
 }
 
 void UiMsg::Update(float dt)
@@ -71,7 +80,19 @@ void UiMsg::Draw(sf::RenderWindow& window)
 	uiConcentration.Draw(window);
 	discovered.Draw(window);
 	uiHp.Draw(window);
+	uiScore.Draw(window);
+	uiHiScore.Draw(window);
 	GameObject::Draw(window);
+}
+
+void UiMsg::SetScore(int i)
+{
+	score = i;
+}
+
+void UiMsg::SetHiScore(int i)
+{
+	hiScore = i;
 }
 
 void UiMsg::uiUpdate()
@@ -92,6 +113,9 @@ void UiMsg::uiUpdate()
 	uiConcentration.SetString(L"집중도 : " + std::to_wstring(concent) + L"%");
 	discovered.SetString(L"[발각됨]");
 	uiHp.SetString(L"상태 : " + std::to_wstring(hp) + L"%");
+
+	uiScore.SetString(L"점수 : " + std::to_wstring(score));
+	uiHiScore.SetString(L"최고점수 : " + std::to_wstring(hiScore));
 
 	if (emptyGun)
 	{

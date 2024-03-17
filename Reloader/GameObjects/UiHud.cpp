@@ -190,7 +190,7 @@ void UiHud::Init()
 		frame[i].SetScale({ 2.f,2.f });
 		frame[i].SetOrigin(Origins::TL);
 		frame[i].SetPosition({ -300.f + i * 200.f, 800.f });
-		frameBullet[i] = 15;
+		frameBullet[i] = 6;
 	}
 
 	handFrame.Init();
@@ -236,6 +236,8 @@ void UiHud::Reset()
 	{
 		frame[i].Reset();
 		magazine[i].Reset();
+		magazine[i].Reset();
+		frameBullet[i] = 6;
 	}
 	uiMsg = dynamic_cast<UiMsg*>(SCENE_MGR.GetCurrentScene()->FindGo("uiMsg"));
 }

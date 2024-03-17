@@ -7,11 +7,29 @@
 #include "Effect.h"
 #include "UiMsg.h"
 #include "EnemySpwaner.h"
+#include "SceneDev1.h"
 
 SceneGame::SceneGame(SceneIds id)
 	: Scene(id)
 {
 
+}
+
+void SceneGame::SetStatus(Status newStatus)
+{
+	currentStatus = newStatus;
+	switch (currentStatus)
+	{
+	case SceneGame::Status::Playing:
+		FRAMEWORK.SetTimeScale(1.f);
+		break;
+	case SceneGame::Status::GameOver:
+		FRAMEWORK.SetTimeScale(0.f);
+		break;
+	case SceneGame::Status::Pause:
+		FRAMEWORK.SetTimeScale(0.f);
+		break;
+	}
 }
 
 void SceneGame::Init()
@@ -47,6 +65,13 @@ void SceneGame::Init()
 	testBg->SetOrigin(Origins::MC);
 	AddGo(testBg);
 
+	testBg2 = new SpriteGo("testBg2");
+	testBg2->SetTexture("graphics/background2.png");
+	testBg2->SetPosition({ 0.f,0.f });
+	testBg2->sortLayer = -1;
+	testBg2->SetOrigin(Origins::MC);
+	AddGo(testBg2);
+
 	magazine = new SpriteGo("magazine");
 	magazine->SetTexture("graphics/fullmagazine.png");
 	magazine->SetOrigin(Origins::TC);
@@ -72,6 +97,18 @@ void SceneGame::Init()
 	uiMsg->SetOrigin(Origins::TR);
 	AddGo(uiMsg,Scene::Ui);
 
+	uiText = new TextGo("uiText");
+	uiText->Set(fontResMgr.Get("fonts/neodgm.ttf"), "", 100, sf::Color::White);
+	uiText->SetString(L"일시정지");
+	uiText->SetPosition({600.f,200.f});
+	uiText->SetOrigin(Origins::MC);
+	uiText->SetActive(false);
+	AddGo(uiText, Scene::Ui);
+
+	SetStatus(Status::Playing);
+
+	LoadHiScore();
+
 	Scene::Init();
 }
 
@@ -83,9 +120,10 @@ void SceneGame::Release()
 void SceneGame::Enter()
 {
 	Scene::Enter();
+	hud = dynamic_cast<UiHud*>(SCENE_MGR.GetCurrentScene()->FindGo("Hud"));
 	FRAMEWORK.GetWindow().setMouseCursorVisible(false);
 	enemySpawners[0]->SetActive(false);
-	spawnCount = 3;
+	spawnCount = 4;
 }
 
 void SceneGame::Exit()
@@ -97,7 +135,6 @@ void SceneGame::Exit()
 void SceneGame::Reset()
 {
 	conCent = 100.f;
-
 	auto& list = GetEnemyList();
 	for (auto Go : list)
 	{
@@ -116,6 +153,42 @@ void SceneGame::Update(float dt)
 	FindGoAll("enemy", enemyList, Layers::World);
 
 	Scene::Update(dt);
+
+	switch (currentStatus)
+	{
+	case Status::Pause:
+		uiText->SetActive(true);
+		if (InputMgr::GetKeyDown(sf::Keyboard::Escape))
+		{
+			FRAMEWORK.SetTimeScale(1.f);
+			SetStatus(Status::Playing);
+		}
+		break;
+	case SceneGame::Status::Playing:
+		uiText->SetActive(false);
+		if (InputMgr::GetKeyDown(sf::Keyboard::Escape))
+		{
+			SetStatus(Status::Pause);
+		}
+		if (player->GetHp() <= 0)
+		{
+			SOUND_MGR.StopBgm();
+			SetStatus(Status::GameOver);
+		}
+		if (InputMgr::GetKeyDown(sf::Keyboard::LShift))
+		{
+			player->Onhit(100);
+		}
+		break;
+	case SceneGame::Status::GameOver:
+		Reset();
+		player->SetHp(100);
+		player->SetActive(true);
+		SCENE_MGR.ChangeScene(SceneIds::SceneDev1);
+		SetStatus(Status::Playing);
+		SOUND_MGR.PlayBgm("sound/Cyberpunk-Underground.wav", true);
+	}
+
 	crosshair->SetPosition(ScreenToWorld((sf::Vector2i)InputMgr::GetMousePos()));
 	sf::Vector2f worldViewCenter = worldView.getCenter();
 
@@ -134,16 +207,26 @@ void SceneGame::Update(float dt)
 	{
 		magazine->SetTexture("graphics/fullmagazine.png");
 	}
-	if (enemyList.size() < 3)
+	respawnTimer += dt;
+	if (enemyList.size() < 4)
 	{
+		respawnTimer = 0;
 		spawnTimer += dt;
-		if (spawnTimer >= 8.f)
+		if (spawnTimer >= 10.f)
 		{
 			enemySpawners[0]->Spawn(spawnCount);
 			spawnCount = 0;
 			spawnTimer = 0.f;
 		}
-
+	}
+	else if (respawnTimer >= 15.f)
+	{
+		if (spawnTimer >= 10.f)
+		{
+			enemySpawners[0]->Spawn(4);
+			spawnTimer = 0.f;
+			respawnTimer = 0;
+		}
 	}
 
 	fireTimer += dt;
@@ -248,6 +331,17 @@ void SceneGame::Update(float dt)
 				player->SetMoveArm(false);
 				crosshair->SetTexture("graphics/MouseTarget.png");
 			}
+			if (hud->GetHandBullet() <= 0)
+			{
+				if (enemy->GetType() == Enemy::Types::Distance)
+				{
+					if (InputMgr::GetKey(sf::Keyboard::Q))
+					{
+						addBullet = enemy->GetEnemyBullet();
+						hud->SetHandMagazine(addBullet);
+					}
+				}
+			}
 		}
 	}
 
@@ -260,14 +354,6 @@ void SceneGame::Update(float dt)
 		{
 			if (!enemyDie)
 			{
-				if (Utils::Distance(player->GetPosition(), enemy->GetPosition()) < 250.f)
-				{
-					uiMsg->GetDisCover(true);
-				}
-				else
-				{
-					uiMsg->GetDisCover(false);
-				}
 				if (playerSit)
 				{
 					enemy->SetMissFire(30);
@@ -296,11 +382,34 @@ void SceneGame::Update(float dt)
 		}
 		timer = 0;
 	}
+
+	auto size = FRAMEWORK.GetWindowSize();
+	auto left = (sf::Vector2f)SCENE_MGR.GetCurrentScene()->ScreenToWorld({ 0, 0 });
+	auto right = (sf::Vector2f)SCENE_MGR.GetCurrentScene()->ScreenToWorld({ size.x, 0 });
+
+	sf::FloatRect backgroundBound = testBg->GetGlobalBounds();
+
+	testBg->GetPosition();
+	testBg2->GetPosition();
+	float bgWidth = backgroundBound.width;
+	float bgLeft = backgroundBound.left;
+
+	if (right.x >= testBg2->GetPosition().x)
+	{
+		testBg->SetPosition({ testBg2->GetPosition().x + bgWidth, testBg->GetPosition().y });
+		std::swap(testBg, testBg2);
+	}
+	else if (left.x <= testBg2->GetPosition().x + 10.f)
+	{
+		testBg->SetPosition({ testBg2->GetPosition().x - bgWidth, testBg2->GetPosition().y });
+		std::swap(testBg, testBg2);
+	}
 }
 
 void SceneGame::FixedUpdate(float dt)
 {
 	Scene::FixedUpdate(dt);
+
 }
 
 void SceneGame::Draw(sf::RenderWindow& window)
@@ -317,4 +426,42 @@ void SceneGame::AddConcent(int i)
 		conCent = 100;
 	}
 	uiMsg->UiConcent(conCent);
+}
+
+void SceneGame::AddScore(int i)
+{
+	this->Score += i;
+	uiMsg->SetScore(this->Score);
+}
+
+void SceneGame::AddHiScore(int i)
+{
+	if (Score > HiScore)
+	{
+		this->HiScore = this->Score;
+		uiMsg->SetHiScore(this->HiScore);
+		SaveHiScore();
+	}
+}
+
+void SceneGame::SaveHiScore()
+{
+	std::ofstream file("HiScore.txt");
+	if (file.is_open())
+	{
+		file << this->HiScore;
+		file.close();
+	}
+}
+
+void SceneGame::LoadHiScore()
+{
+	std::ifstream file("HiScore.txt");
+
+	if (file.is_open())
+	{
+		file >> this->HiScore;
+		file.close();
+		uiMsg->SetHiScore(this->HiScore);
+	}
 }

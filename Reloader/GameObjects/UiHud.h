@@ -30,7 +30,7 @@ protected:
 	sf::Vector2f frameMagazinePos;
 
 	int handBullet = 0;
-	int frameBullet[4] = { 15, 15, 15, 15 };
+	int frameBullet[4] = { 6, 6, 6, 6 };
 
 	bool onHandBullet = false;
 public:

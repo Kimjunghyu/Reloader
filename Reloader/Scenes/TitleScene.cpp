@@ -41,6 +41,8 @@ void TitleScene::Release()
 void TitleScene::Enter()
 {
 	Scene::Enter();
+
+	SOUND_MGR.PlayBgm("sound/SilentBGM.wav", true);
 }
 
 void TitleScene::Update(float dt)

@@ -11,6 +11,8 @@ protected:
 	TextGo uiConcentration;
 	TextGo discovered;
 	TextGo uiHp;
+	TextGo uiScore;
+	TextGo uiHiScore;
 	Gun* gun;
 
 	int bullet = 0;
@@ -26,6 +28,10 @@ protected:
 	bool addMagazine = false;
 	int concent = 100;
 	int hp = 100;
+
+	int score = 0;
+	int hiScore = 0;
+
 public:
 	UiMsg(const std::string& name = "");
 	~UiMsg() override = default;
@@ -42,6 +48,9 @@ public:
 	void Reset()override;
 	void Update(float dt)override;
 	void Draw(sf::RenderWindow& window) override;
+
+	void SetScore(int i);
+	void SetHiScore(int i);
 
 	void GetBullet(int i) { bullet = i; }
 	void GetRmc(bool b) { OnRmc = b; }

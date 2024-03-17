@@ -5,6 +5,8 @@
 class SceneGame;
 class UiMsg;
 class Enemy;
+class Spawner;
+class UiHud;
 
 class Player : public SpriteGo
 {
@@ -20,10 +22,14 @@ protected:
 	SpriteGo* playerGun;
 	UiMsg* uiMsg;
 	Enemy* enemy;
+	UiHud* uiHud;
+
+	std::vector<Spawner*> enemySpawners;
+	std::list<GameObject*> enemyList;
 
 	int hp = 100;
 	int maxHp = 100;
-	int testHp = 1000;
+	int enemyBulletCount = 0;
 
 	float timer = 0.f;
 	float maxConcent = 100.f;
@@ -37,6 +43,8 @@ protected:
 public:
 	Player(const std::string& name = "");
 	~Player() override = default;
+
+	const std::list<GameObject*>& GetEnemyList() const { return enemyList; }
 
 	SpriteGo* GetPlayerArm()
 	{
@@ -54,6 +62,9 @@ public:
 	void SetPlayerArmAngle(sf::Vector2f v);
 	bool playerSit = false;
 	void AddMagazine(bool b) { addMagazine = b; }
+
+	int GetHp() { return hp; }
+	void SetHp(int i) { hp = i; }
 
 	void Onhit(int i);
 	void OnDie();

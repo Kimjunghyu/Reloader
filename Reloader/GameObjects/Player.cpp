@@ -2,6 +2,8 @@
 #include "Player.h"
 #include "SceneGame.h"
 #include "UiMsg.h"
+#include "Enemy.h"
+#include "UiHud.h"
 
 Player::Player(const std::string& name)
 	:SpriteGo(name)
@@ -28,6 +30,10 @@ void Player::TestInstance()
 	{
 		return;
 	}
+	if (addMagazine)
+	{
+
+	}
 }
 
 void Player::Init()
@@ -51,6 +57,7 @@ void Player::Reset()
 {
 	sceneGame = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
 	uiMsg = dynamic_cast<UiMsg*>(SCENE_MGR.GetCurrentScene()->FindGo("uiMsg"));
+	uiHud = dynamic_cast<UiHud*>(SCENE_MGR.GetCurrentScene()->FindGo("uiHud"));
 
 	animator.Play("animations/playeridle.csv");
 	SetOrigin(Origins::BC);
@@ -60,7 +67,7 @@ void Player::Reset()
 
 	std::function<void()> playerhit = std::bind(&Player::TestInstance, this);
 	animator.AddEvent("animations/playerhit.csv", 7, playerhit);
-	hp = testHp;
+	hp = maxHp;
 }
 
 void Player::Update(float dt)
@@ -107,7 +114,7 @@ void Player::Update(float dt)
 	if (InputMgr::GetKeyDown(sf::Keyboard::C) || InputMgr::GetKeyDown(sf::Keyboard::Q))
 	{
 		animator.Play("animations/playersit.csv");
-
+		SOUND_MGR.PlaySfx("sound/footstep5.wav");
 		if (InputMgr::GetKey(sf::Keyboard::C))
 		{
 			playerSit = true;
@@ -130,10 +137,6 @@ void Player::Update(float dt)
 		uiMsg->PlayerSit(false);
 		uiMsg->AddMagazine(false);
 	}
-	//if (addMagazine && InputMgr::GetKey(sf::Keyboard::Q))
-	//{
-	//	uiMsg->AddMagazine(true);
-	//}
 
 	if (!playerSit)
 	{
@@ -175,27 +178,25 @@ void Player::Update(float dt)
 	}
 	timer += dt;
 
-	if (timer >= 1.5f)
+	if (timer >= 5.f)
 	{
 		hp += 10;
-		if (hp >= testHp)
+		if (hp >= maxHp)
 		{
-			hp = testHp;
+			hp = maxHp;
 		}
 		timer = 0;
 	}
+
 	if (noDamage)
 	{
 		timer = 0;
 	}
 
-	if (hp <= 0)
-	{
-		OnDie();
-	}
-	else if (hp > 0)
+	if (hp > 0)
 	{
 		isAlive = true;
+		SetActive(true);
 	}
 }
 
@@ -215,28 +216,25 @@ void Player::Onhit(int i)
 {
 	if (!isAlive)
 		return;
-
+	SOUND_MGR.PlaySfx("sound/meleeHit.wav");
 	if (!noDamage)
 	{
 		animator.PlayQueue("animations/playerhit.csv");
 		hp -= i;
 		noDamage = true;
 	}
-	else if (noDamage)
+	if (hp <= 0)
 	{
-		return;
+		hp = 0;
+		OnDie();
 	}
 }
 
 void Player::OnDie()
 {
-	isAlive = false;
-	hp = 0;
+	if (!isAlive)
+		return;
 
+	isAlive = false;
 	SetActive(false);
-	if (InputMgr::GetKeyDown(sf::Keyboard::Num0))
-	{
-		hp = testHp;
-		SetActive(true);
-	}
 }

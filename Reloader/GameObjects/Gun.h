@@ -24,7 +24,7 @@ protected:
 	float speed = 400.f;
 	sf::Vector2f pos;
 
-	int bulletCount = 15;
+	int bulletCount = 6;
 	int getBullet = 0;
 	float timer = 0.f;
 	float fireinterval = 0.5f;

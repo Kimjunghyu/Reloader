@@ -61,7 +61,7 @@ void Gun::Reset()
 	animator.AddEvent("animations/Gun.csv", 5, funcInstance);
 
 	animator.Play("animations/Gunreturn.csv");
-	bulletCount = 15;
+	bulletCount = 6;
 }
 
 void Gun::Update(float dt)
@@ -80,6 +80,8 @@ void Gun::Update(float dt)
 			{
 				animator.PlayQueue("animations/Gunreturn.csv");
 				sceneGame->SetErrGun(false);
+				SOUND_MGR.PlaySfx("sound/gunShot.wav");
+				SOUND_MGR.PlaySfx("sound/bulletWhizzing1.wav");
 			}
 			else
 			{
@@ -88,6 +90,7 @@ void Gun::Update(float dt)
 				animator.AddEvent("animations/Gunrerr.csv", 5, errgun);
 				missFire = true;
 				sceneGame->SetErrGun(true);
+				SOUND_MGR.PlaySfx("sound/triggerPullEmpty.wav");
 			}
 			effect->Fire();
 			bulletCount -= 1;
@@ -97,7 +100,6 @@ void Gun::Update(float dt)
 			onTarget = true;
 			timer = 0;
 		}
-
 	}
 	
 	if (bulletCount <= 0)
@@ -137,6 +139,7 @@ void Gun::Update(float dt)
 		animator.Play("animations/Gun.csv");
 		animator.PlayQueue("animations/Gunreturn.csv");
 		uiMsg->GetKeyE(true);
+		SOUND_MGR.PlaySfx("sound/gunCocking1.wav");
 	}
 	if (InputMgr::GetKey(sf::Keyboard::E))
 	{
@@ -161,11 +164,13 @@ void Gun::Update(float dt)
 
 	if (InputMgr::GetKeyUp(sf::Keyboard::E))
 	{
+		SOUND_MGR.PlaySfx("sound/gunCocking2.wav");
 		animator.Resume();
 		anistop = false;
 	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::R))
 	{
+		SOUND_MGR.PlaySfx("sound/magazineLoading1.wav");
 		if (uiHud->GetHandBullet() > 0)
 		{
 			bulletCount = 0;
@@ -187,6 +192,7 @@ void Gun::Update(float dt)
 	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::W) && !onMagazine)
 	{
+		SOUND_MGR.PlaySfx("sound/gunCocking1.wav");
 		getBullet = uiHud->GetHandBullet();
 		bulletCount += getBullet;
 		getBullet = 0;
@@ -199,7 +205,7 @@ void Gun::Update(float dt)
 	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::Tab)) //test
 	{
-		bulletCount = 15;
+		bulletCount = 6;
 	}
 	if (InputMgr::GetKeyDown(sf::Keyboard::F1))
 	{
