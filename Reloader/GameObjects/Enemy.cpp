@@ -4,6 +4,7 @@
 #include "EnemySpwaner.h"
 #include "SceneGame.h"
 #include "UiMsg.h"
+#include "SceneDev1.h"
 
 Enemy* Enemy::Create(Types enemyTypes)
 {
@@ -62,6 +63,7 @@ void Enemy::Reset()
 {
 	SpriteGo::Reset();
 	sceneGame = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+	sceneDev1 = dynamic_cast<SceneDev1*>(SCENE_MGR.GetCurrentScene());
 	player = dynamic_cast<Player*>(SCENE_MGR.GetCurrentScene()->FindGo("Player"));
 	enemySpawner = dynamic_cast<EnemySpwaner*>(SCENE_MGR.GetCurrentScene()->FindGo("enemy"));
 	uiMsg = dynamic_cast<UiMsg*>(SCENE_MGR.GetCurrentScene()->FindGo("uiMsg"));
@@ -226,6 +228,7 @@ void Enemy::Update(float dt)
 		{
 			sceneGame->AddScore(10);
 			sceneGame->AddHiScore(10);
+			sceneDev1->AddScore(10);
 			addScore = true;
 		}
 		ondie = true;

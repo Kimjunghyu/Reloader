@@ -7,6 +7,7 @@ class Player;
 class EnemySpwaner;
 class SceneGame;
 class UiMsg;
+class SceneDev1;
 
 class Enemy : public SpriteGo
 {
@@ -30,7 +31,8 @@ protected:
 	Types type;
 	EnemySpwaner* enemySpawner;
 	SceneGame* sceneGame;
-	
+	SceneDev1* sceneDev1;
+
 	sf::RenderWindow window;
 
 	sf::Vector2f direction = { 1.f,0.f };

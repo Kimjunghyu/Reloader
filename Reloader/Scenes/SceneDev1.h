@@ -15,8 +15,8 @@ protected:
 	TextGo* uiScore;
 	TextGo* uiHiScore;
 
-	int score;
-	int hiScore;
+	int Score;
+	int HiScore;
 	sf::RenderWindow window;
 
 public:
@@ -30,8 +30,8 @@ public:
 
 	void Update(float dt) override;
 
-	void SetScore(int i);
-	void SetHiScore(int i);
+	void AddScore(int i);
+	void SetHiScore();
 
 	void Draw(sf::RenderWindow& window) override;
 };
